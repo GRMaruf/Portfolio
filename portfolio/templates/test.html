@@ -1,0 +1,27 @@
+{% extends 'master/base.html' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container m-5">
+    <form action="" method="post">
+    {% csrf_token %}
+    <select name="tags" id="id_tags" multiple>
+      <option value="1" selected>Django</option> 
+      <option value="2" selected>Python</option> 
+      <option value="3" selected>PostgreSQL</option> 
+      <option value="4" selected>Bootstrap</option> 
+      <option value="5">Keyboard</option> 
+      <option value="6">Portfolio App</option> 
+      <option value="7">MD. Sadi-imam Khan</option> 
+      <option value="8">Azmaen</option>
+    </select>
+  </form>
+</div>
+{% endblock %}

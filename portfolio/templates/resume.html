@@ -1,0 +1,319 @@
+{% extends 'master/base.html' %}
+
+{% block title %}
+  ATS Resume - {{ profile.full_name|default:'Portfolio' }}
+{% endblock %}
+
+{% block css %}
+  <style>
+    .resume-page {
+      padding: 56px 0 72px;
+    }
+
+    .resume-toolbar {
+      position: sticky;
+      top: 86px;
+    }
+
+    .resume-document {
+      color: #1f2937;
+      line-height: 1.55;
+    }
+
+    .resume-document h1 {
+      font-size: clamp(2.2rem, 5vw, 3.65rem);
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .resume-contact {
+      color: #4b5563;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.7rem;
+    }
+
+    .resume-contact span,
+    .resume-contact a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .resume-section {
+      border-top: 1px solid var(--line);
+      padding-top: 1.25rem;
+    }
+
+    .resume-section h2 {
+      color: var(--brand-dark);
+      font-size: 0.95rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .resume-item + .resume-item {
+      margin-top: 1.35rem;
+    }
+
+    .resume-role {
+      color: var(--ink);
+      font-size: 1.08rem;
+      font-weight: 850;
+      margin-bottom: 0;
+    }
+
+    .resume-meta {
+      color: #4b5563;
+      font-weight: 700;
+    }
+
+    .resume-aside {
+      position: sticky;
+      top: 86px;
+    }
+
+    .resume-chip {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      display: inline-flex;
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin: 0 0.35rem 0.5rem 0;
+      padding: 0.45rem 0.75rem;
+    }
+
+    .resume-quality li {
+      margin-bottom: 0.55rem;
+    }
+
+    .print-note {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      color: #92400e;
+    }
+
+    @media (max-width: 991.98px) {
+      .resume-toolbar,
+      .resume-aside {
+        position: static;
+      }
+    }
+
+    @media print {
+      @page {
+        margin: 0.55in;
+      }
+
+      .resume-page {
+        padding: 0;
+      }
+
+      .resume-document {
+        color: #111827;
+        font-size: 10.5pt;
+        line-height: 1.38;
+      }
+
+      .resume-document h1 {
+        font-size: 24pt;
+      }
+
+      .resume-document p {
+        margin-bottom: 0.35rem;
+      }
+
+      .resume-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        padding-top: 0.7rem;
+      }
+
+      .resume-section h2 {
+        color: #111827;
+        font-size: 10pt;
+        margin-bottom: 0.35rem;
+      }
+
+      .resume-item + .resume-item {
+        margin-top: 0.7rem;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <section class="resume-page">
+    <div class="container">
+      <div class="row g-4 align-items-start">
+        <div class="col-lg-3 no-print">
+          <aside class="resume-toolbar d-grid gap-3">
+            <div class="surface p-4">
+              <div class="eyebrow mb-2">ATS resume</div>
+              <h1 class="h3 fw-bold mb-3">Ready for PDF and recruiters.</h1>
+              <button type="button" class="btn btn-brand w-100 py-3 mb-2" onclick="window.print()">Print or Save PDF</button>
+              <a href="{% url 'contact' %}" class="btn btn-outline-brand w-100">Contact Page</a>
+            </div>
+
+            <div class="print-note p-3">
+              <strong>Tip:</strong> The printed PDF removes decoration, keeps one column, and preserves real text for ATS scanning.
+            </div>
+
+            <div class="surface p-4">
+              <h2 class="h6 fw-bold text-uppercase mb-3">Resume strength</h2>
+              <ul class="resume-quality ps-3 mb-0 small muted">
+                <li>Plain text headings</li>
+                <li>Searchable skills</li>
+                <li>Chronological dates</li>
+                <li>Project links included</li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+
+        <div class="col-lg-9">
+          {% if profile %}
+            <article class="resume-document surface p-4 p-md-5 reveal">
+              <header class="mb-4">
+                <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+                  <div>
+                    <h1 class="mb-2">{{ profile.full_name }}</h1>
+                    <p class="h5 fw-bold mb-3">{{ profile.title|default:'Developer' }}</p>
+                  </div>
+                  <div class="text-md-end no-print">
+                    <a href="{% if profile_username %}{% url 'username_profile' profile_username %}{% else %}{% url 'profile' %}{% endif %}" class="btn btn-outline-brand">Portfolio</a>
+                  </div>
+                </div>
+
+                <div class="resume-contact mb-2">
+                  {% if profile.email %}<a href="mailto:{{ profile.email }}">{{ profile.email }}</a>{% endif %}
+                  {% if profile.phone %}<span>{{ profile.phone }}</span>{% endif %}
+                  {% if profile.location %}<span>{{ profile.location }}</span>{% endif %}
+                </div>
+                <div class="resume-contact">
+                  {% if profile.linkedin %}<span>LinkedIn: {{ profile.linkedin }}</span>{% endif %}
+                  {% if profile.github %}<span>GitHub: {{ profile.github }}</span>{% endif %}
+                  {% if profile.website %}<span>Website: {{ profile.website }}</span>{% endif %}
+                </div>
+              </header>
+
+              {% if profile.bio %}
+                <section class="resume-section mb-4">
+                  <h2>Professional Summary</h2>
+                  <p class="mb-0">{{ profile.bio }}</p>
+                </section>
+              {% endif %}
+
+              <section class="resume-section mb-4">
+                <h2>Technical Skills</h2>
+                <p class="mb-0 d-none d-print-block">
+                  {% for skill in profile.skills.all %}
+                    {{ skill.name }}{% if not forloop.last %}, {% endif %}
+                  {% empty %}
+                    Add skills in the dashboard.
+                  {% endfor %}
+                </p>
+                <div class="no-print">
+                  {% for skill in profile.skills.all %}
+                    <span class="resume-chip">{{ skill.name }}{% if skill.level %} - {{ skill.get_level_display }}{% endif %}</span>
+                  {% empty %}
+                    <span class="muted">Add skills in the dashboard.</span>
+                  {% endfor %}
+                </div>
+              </section>
+
+              <section class="resume-section mb-4">
+                <h2>Professional Experience</h2>
+                {% for exp in profile.experiences.all %}
+                  <div class="resume-item">
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-1">
+                      <h3 class="resume-role">{{ exp.position }}</h3>
+                      <strong>{{ exp.start_date|date:'M Y' }} - {% if exp.end_date %}{{ exp.end_date|date:'M Y' }}{% else %}Present{% endif %}</strong>
+                    </div>
+                    <div class="resume-meta">{{ exp.company }}{% if exp.location %}, {{ exp.location }}{% endif %}</div>
+                    {% if exp.description %}
+                      <p class="mb-0">{{ exp.description }}</p>
+                    {% endif %}
+                  </div>
+                {% empty %}
+                  <p class="mb-0">Add experience in the dashboard.</p>
+                {% endfor %}
+              </section>
+
+              <section class="resume-section mb-4">
+                <h2>Selected Projects</h2>
+                {% for project in profile.projects.all %}
+                  <div class="resume-item">
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-1">
+                      <h3 class="resume-role">{{ project.title }}</h3>
+                      {% if project.start_date %}
+                        <strong>{{ project.start_date|date:'Y' }}{% if project.end_date %} - {{ project.end_date|date:'Y' }}{% endif %}</strong>
+                      {% endif %}
+                    </div>
+                    <p class="mb-1">{{ project.description }}</p>
+                    <p class="mb-0">
+                      {% for tag in project.tags.all %}
+                        {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                      {% endfor %}
+                      {% if project.live_link %}{% if project.tags.all %} | {% endif %}Live: {{ project.live_link }}{% endif %}
+                      {% if project.github_link %}{% if project.tags.all or project.live_link %} | {% endif %}Code: {{ project.github_link }}{% endif %}
+                    </p>
+                  </div>
+                {% empty %}
+                  <p class="mb-0">Add projects in the dashboard.</p>
+                {% endfor %}
+              </section>
+
+              <section class="resume-section mb-4">
+                <h2>Education</h2>
+                {% for edu in profile.education.all %}
+                  <div class="resume-item">
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-1">
+                      <h3 class="resume-role">{{ edu.degree }}{% if edu.field_of_study %}, {{ edu.field_of_study }}{% endif %}</h3>
+                      <strong>{{ edu.start_year }} - {{ edu.end_year|default:'Present' }}</strong>
+                    </div>
+                    <div class="resume-meta">{{ edu.institution }}</div>
+                    {% if edu.description %}
+                      <p class="mb-0">{{ edu.description }}</p>
+                    {% endif %}
+                  </div>
+                {% empty %}
+                  <p class="mb-0">Add education in the dashboard.</p>
+                {% endfor %}
+              </section>
+
+              <section class="resume-section">
+                <h2>Certifications</h2>
+                {% for cert in profile.certificates.all %}
+                  <div class="resume-item">
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-1">
+                      <h3 class="resume-role">{{ cert.title }}</h3>
+                      <strong>{{ cert.issue_date|date:'M Y' }}</strong>
+                    </div>
+                    <div class="resume-meta">{{ cert.issuer }}</div>
+                    {% if cert.credential_url or cert.credential_id %}
+                      <p class="mb-0">
+                        {% if cert.credential_id %}Credential ID: {{ cert.credential_id }}{% endif %}
+                        {% if cert.credential_url %}{% if cert.credential_id %} | {% endif %}Credential URL: {{ cert.credential_url }}{% endif %}
+                      </p>
+                    {% endif %}
+                  </div>
+                {% empty %}
+                  <p class="mb-0">Add certificates in the dashboard.</p>
+                {% endfor %}
+              </section>
+            </article>
+          {% else %}
+            <div class="surface p-5 text-center">
+              <h2 class="h3 fw-bold">No profile found.</h2>
+              <p class="section-copy mb-0">Create your profile first, then this page will generate a clean ATS-friendly resume.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

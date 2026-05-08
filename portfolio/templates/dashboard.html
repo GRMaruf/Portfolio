@@ -1,0 +1,494 @@
+{% extends 'master/base.html' %}
+
+{% block title %}
+  Dashboard
+{% endblock %}
+
+{% block css %}
+  <style>
+    .dashboard-wrap {
+      padding: 44px 0 72px;
+    }
+
+    .dash-hero {
+      background:
+        linear-gradient(135deg, rgba(15, 118, 110, 0.94), rgba(22, 33, 62, 0.96)),
+        url('/media/app/logo.png') right 2rem center / 160px no-repeat;
+      border-radius: 8px;
+      color: #fff;
+      overflow: hidden;
+      padding: clamp(1.4rem, 4vw, 2.4rem);
+    }
+
+    .dash-hero .section-copy,
+    .dash-hero .muted {
+      color: rgba(255, 255, 255, 0.76);
+    }
+
+    .dash-action {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(221, 229, 238, 0.92);
+      border-radius: 8px;
+      color: var(--ink);
+      display: block;
+      height: 100%;
+      padding: 1.1rem;
+      text-decoration: none;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+
+    .dash-action:hover {
+      border-color: rgba(15, 118, 110, 0.36);
+      box-shadow: var(--shadow);
+      color: var(--ink);
+      transform: translateY(-4px);
+    }
+
+    .dash-icon {
+      align-items: center;
+      background: #e7f6f3;
+      border-radius: 8px;
+      color: var(--brand-dark);
+      display: inline-flex;
+      font-weight: 900;
+      height: 42px;
+      justify-content: center;
+      margin-bottom: 0.85rem;
+      width: 42px;
+    }
+
+    .dash-table {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .dash-table table {
+      margin-bottom: 0;
+      min-width: 680px;
+    }
+
+    .dash-table th {
+      border-bottom: 1px solid var(--line);
+      color: var(--brand-dark);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .dash-table td {
+      vertical-align: middle;
+    }
+
+    .dash-form {
+      max-width: 760px;
+    }
+
+    .dash-form .form-control,
+    .dash-form .form-select {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      min-height: 46px;
+    }
+
+    .dash-form textarea.form-control {
+      min-height: 130px;
+    }
+
+    .dash-form .form-control:focus,
+    .dash-form .form-select:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.12);
+    }
+
+    .status-dot {
+      background: #12b76a;
+      border-radius: 50%;
+      display: inline-block;
+      height: 8px;
+      margin-right: 0.4rem;
+      width: 8px;
+    }
+
+    .action-badge {
+      border-radius: 999px;
+      display: inline-flex;
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1;
+      padding: 0.45rem 0.7rem;
+      text-decoration: none;
+    }
+
+    .action-edit {
+      background: #fff7ed;
+      color: #9a3412;
+    }
+
+    .action-delete {
+      background: #fef2f2;
+      color: #b42318;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <section class="dashboard-wrap">
+    <div class="container">
+      <div class="dash-hero mb-4 reveal">
+        <div class="row align-items-end g-4">
+          <div class="col-lg-8">
+            <div class="eyebrow mb-2 text-white-50">Portfolio control room</div>
+            <h1 class="section-title mb-3">{{ heading|default:'Manage portfolio' }}</h1>
+            <p class="section-copy mb-0">Update the public site, resume, projects, skills, credentials, and testimonials from one focused workspace.</p>
+          </div>
+          <div class="col-lg-4">
+            <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+              <a href="{% url 'profile' %}" class="btn btn-light">View Site</a>
+              <a href="{% url 'resume' %}" class="btn btn-outline-light">Resume</a>
+              <a href="{% url 'projects' %}" class="btn btn-outline-light">Projects</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+          <div class="surface p-3 h-100">
+            <div class="h3 fw-bold mb-0">{{ profile.projects.count|default:'0' }}</div>
+            <div class="muted small">Projects</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="surface p-3 h-100">
+            <div class="h3 fw-bold mb-0">{{ profile.skills.count|default:'0' }}</div>
+            <div class="muted small">Skills</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="surface p-3 h-100">
+            <div class="h3 fw-bold mb-0">{{ profile.experiences.count|default:'0' }}</div>
+            <div class="muted small">Experience</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="surface p-3 h-100">
+            <div class="h3 fw-bold mb-0">{{ profile.certificates.count|default:'0' }}</div>
+            <div class="muted small">Certificates</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mb-5">
+        <div class="col-6 col-md-4 col-xl-3">
+          <a class="dash-action" href="{% url 'edit_profile' %}">
+            <span class="dash-icon">P</span>
+            <div class="fw-bold">Profile</div>
+            <div class="muted small">Name, title, bio, links</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-xl-3">
+          <a class="dash-action" href="{% url 'project' %}">
+            <span class="dash-icon">W</span>
+            <div class="fw-bold">Projects</div>
+            <div class="muted small">Case studies and links</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-xl-3">
+          <a class="dash-action" href="{% url 'skill' %}">
+            <span class="dash-icon">S</span>
+            <div class="fw-bold">Skills</div>
+            <div class="muted small">Tools and strengths</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-xl-3">
+          <a class="dash-action" href="{% url 'experience' %}">
+            <span class="dash-icon">E</span>
+            <div class="fw-bold">Experience</div>
+            <div class="muted small">Roles and impact</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-xl-3">
+          <a class="dash-action" href="{% url 'education' %}">
+            <span class="dash-icon">D</span>
+            <div class="fw-bold">Education</div>
+            <div class="muted small">Degrees and study</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-xl-3">
+          <a class="dash-action" href="{% url 'certificate' %}">
+            <span class="dash-icon">C</span>
+            <div class="fw-bold">Certificates</div>
+            <div class="muted small">Credentials and proof</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-xl-3">
+          <a class="dash-action" href="{% url 'testimonial' %}">
+            <span class="dash-icon">T</span>
+            <div class="fw-bold">Testimonials</div>
+            <div class="muted small">Social proof</div>
+          </a>
+        </div>
+        <div class="col-6 col-md-4 col-xl-3">
+          <a class="dash-action" href="{% url 'add_tags' %}">
+            <span class="dash-icon">#</span>
+            <div class="fw-bold">Tags</div>
+            <div class="muted small">Project categories</div>
+          </a>
+        </div>
+      </div>
+
+      {% if projects %}
+        <section class="surface p-3 p-md-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+            <div>
+              <h2 class="h4 fw-bold mb-1">Projects</h2>
+              <p class="muted mb-0">Keep links and descriptions recruiter-ready.</p>
+            </div>
+            <a href="{% url 'project' %}" class="btn btn-brand">Add Project</a>
+          </div>
+          <div class="dash-table">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>SL</th>
+                  <th>Title</th>
+                  <th>Status</th>
+                  <th>Live</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for x in projects %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="fw-bold">{{ x.title }}</td>
+                    <td><span class="status-dot"></span>{% if x.live_link %}Published{% else %}Draft{% endif %}</td>
+                    <td>{% if x.live_link %}<a href="{{ x.live_link }}" target="_blank" rel="noreferrer">Visit</a>{% else %}<span class="muted">No link</span>{% endif %}</td>
+                    <td>
+                      <a href="{% url 'project' x.id %}" class="action-badge action-edit me-1">Edit</a>
+                      <a href="{% url 'project_delete' x.id %}" class="action-badge action-delete">Delete</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      {% endif %}
+
+      {% if skills %}
+        <section class="surface p-3 p-md-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+            <div>
+              <h2 class="h4 fw-bold mb-1">Skills</h2>
+              <p class="muted mb-0">Short, searchable keywords for your resume.</p>
+            </div>
+            <a href="{% url 'skill' %}" class="btn btn-brand">Add Skill</a>
+          </div>
+          <div class="dash-table">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>SL</th>
+                  <th>Name</th>
+                  <th>Level</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for x in skills %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="fw-bold">{{ x.name }}</td>
+                    <td>{{ x.get_level_display }}</td>
+                    <td>
+                      <a href="{% url 'skill' x.id %}" class="action-badge action-edit me-1">Edit</a>
+                      <a href="{% url 'skill_delete' x.id %}" class="action-badge action-delete">Delete</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      {% endif %}
+
+      {% if experiences %}
+        <section class="surface p-3 p-md-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+            <div>
+              <h2 class="h4 fw-bold mb-1">Experience</h2>
+              <p class="muted mb-0">Roles, companies, and measurable work.</p>
+            </div>
+            <a href="{% url 'experience' %}" class="btn btn-brand">Add Experience</a>
+          </div>
+          <div class="dash-table">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>SL</th>
+                  <th>Position</th>
+                  <th>Company</th>
+                  <th>Timeline</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for x in experiences %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="fw-bold">{{ x.position }}</td>
+                    <td>{{ x.company }}</td>
+                    <td>{{ x.start_date|date:'M Y' }} - {% if x.end_date %}{{ x.end_date|date:'M Y' }}{% else %}Present{% endif %}</td>
+                    <td>
+                      <a href="{% url 'experience' x.id %}" class="action-badge action-edit me-1">Edit</a>
+                      <a href="{% url 'experience_delete' x.id %}" class="action-badge action-delete">Delete</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      {% endif %}
+
+      {% if educations %}
+        <section class="surface p-3 p-md-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+            <div>
+              <h2 class="h4 fw-bold mb-1">Education</h2>
+              <p class="muted mb-0">Academic background for the resume.</p>
+            </div>
+            <a href="{% url 'education' %}" class="btn btn-brand">Add Education</a>
+          </div>
+          <div class="dash-table">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>SL</th>
+                  <th>Institution</th>
+                  <th>Degree</th>
+                  <th>Years</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for x in educations %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="fw-bold">{{ x.institution }}</td>
+                    <td>{{ x.degree }}</td>
+                    <td>{{ x.start_year }} - {{ x.end_year|default:'Present' }}</td>
+                    <td>
+                      <a href="{% url 'education' x.id %}" class="action-badge action-edit me-1">Edit</a>
+                      <a href="{% url 'education_delete' x.id %}" class="action-badge action-delete">Delete</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      {% endif %}
+
+      {% if certificates %}
+        <section class="surface p-3 p-md-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+            <div>
+              <h2 class="h4 fw-bold mb-1">Certificates</h2>
+              <p class="muted mb-0">Credentials with issuer and verification.</p>
+            </div>
+            <a href="{% url 'certificate' %}" class="btn btn-brand">Add Certificate</a>
+          </div>
+          <div class="dash-table">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>SL</th>
+                  <th>Title</th>
+                  <th>Issuer</th>
+                  <th>Issued</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for x in certificates %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="fw-bold">{{ x.title }}</td>
+                    <td>{{ x.issuer }}</td>
+                    <td>{{ x.issue_date|date:'M Y' }}</td>
+                    <td>
+                      <a href="{% url 'certificate' x.id %}" class="action-badge action-edit me-1">Edit</a>
+                      <a href="{% url 'certificate_delete' x.id %}" class="action-badge action-delete">Delete</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      {% endif %}
+
+      {% if testimonials %}
+        <section class="surface p-3 p-md-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+            <div>
+              <h2 class="h4 fw-bold mb-1">Testimonials</h2>
+              <p class="muted mb-0">Short endorsements for your public profile.</p>
+            </div>
+            <a href="{% url 'testimonial' %}" class="btn btn-brand">Add Testimonial</a>
+          </div>
+          <div class="dash-table">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>SL</th>
+                  <th>Name</th>
+                  <th>Position</th>
+                  <th>Rating</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for x in testimonials %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="fw-bold">{{ x.name }}</td>
+                    <td>{{ x.position }}</td>
+                    <td>{{ x.rating }}/5</td>
+                    <td>
+                      <a href="{% url 'testimonial' x.id %}" class="action-badge action-edit me-1">Edit</a>
+                      <a href="{% url 'testimonial_delete' x.id %}" class="action-badge action-delete">Delete</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      {% endif %}
+
+      {% if form %}
+        <section class="dash-form surface p-3 p-md-4 mx-auto">
+          <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
+            <div>
+              <div class="eyebrow mb-2">{{ action }}</div>
+              <h2 class="h3 fw-bold mb-1 text-capitalize">{{ heading }}</h2>
+              <p class="muted mb-0">Use clear titles, concise descriptions, and complete links for the strongest portfolio and resume.</p>
+            </div>
+          </div>
+
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include 'forms/form-core.html' %}
+            <div class="d-grid">
+              <button type="submit" class="btn btn-brand py-3 text-capitalize">{{ action }} {{ heading }}</button>
+            </div>
+          </form>
+        </section>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

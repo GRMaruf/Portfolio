@@ -1,0 +1,82 @@
+{% extends 'master/base.html' %}
+
+{% block title %}
+  Contact - {{ profile.full_name|default:'Portfolio' }}
+{% endblock %}
+
+{% block css %}
+  <style>
+    .contact-field {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      min-height: 48px;
+      padding: 0.85rem 1rem;
+      width: 100%;
+    }
+
+    .contact-field:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.13);
+      outline: 0;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <section class="section-pad">
+    <div class="container">
+      <div class="row g-5 align-items-start">
+        <div class="col-lg-5 reveal">
+          <div class="eyebrow mb-2">Contact</div>
+          <h1 class="section-title mb-3">Let us build something useful.</h1>
+          <p class="section-copy">Send a message with the problem, deadline, and any links that help. Clear details make the first reply much better.</p>
+
+          <div class="surface p-4 mt-4">
+            {% if profile.email %}
+              <div class="mb-3">
+                <div class="fw-bold">Email</div>
+                <a href="mailto:{{ profile.email }}" class="text-decoration-none">{{ profile.email }}</a>
+              </div>
+            {% endif %}
+            {% if profile.phone %}
+              <div class="mb-3">
+                <div class="fw-bold">Phone</div>
+                <a href="tel:{{ profile.phone }}" class="text-decoration-none">{{ profile.phone }}</a>
+              </div>
+            {% endif %}
+            {% if profile.location %}
+              <div>
+                <div class="fw-bold">Location</div>
+                <span class="muted">{{ profile.location }}</span>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="col-lg-7 reveal reveal-delay-1">
+          <div class="surface p-4 p-md-5">
+            {% if success_message %}
+              <div class="alert alert-success">{{ success_message }}</div>
+            {% endif %}
+            <form method="post" class="d-grid gap-3">
+              {% csrf_token %}
+              <div>
+                <label for="name" class="form-label fw-bold">Name</label>
+                <input type="text" name="name" id="name" class="contact-field" required />
+              </div>
+              <div>
+                <label for="email" class="form-label fw-bold">Email</label>
+                <input type="email" name="email" id="email" class="contact-field" required />
+              </div>
+              <div>
+                <label for="message" class="form-label fw-bold">Message</label>
+                <textarea name="message" id="message" rows="6" class="contact-field" placeholder="Tell me about your project..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-brand py-3">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
