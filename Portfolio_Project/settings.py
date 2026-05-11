@@ -89,7 +89,7 @@ EMAIL_USE_TLS = True
 
 # Gmail requires an App Password (NOT your Gmail login password)
 EMAIL_HOST_USER = 'golamrasulmaruf@gmail.com'
-EMAIL_HOST_PASSWORD = 'seqx ndtv dzcw kdnp'
+EMAIL_HOST_PASSWORD = 'xxxx xxxx xxxx xxxx'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
