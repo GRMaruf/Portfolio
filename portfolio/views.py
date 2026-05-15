@@ -7,8 +7,27 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
 
+def get_username(request):
+    return request.user.username
+
 def get_user_profile(username=None):
     return Profile.objects.filter(user__username=username).first()
+
+def profile(request, username = None):
+    context = {}
+
+    if username:
+        profile = get_user_profile(username)
+        if profile is None:
+            context['no_profile_error'] = True
+    elif request.user.is_authenticated:
+        return redirect('profile', username=get_username(request))
+    else:
+        profile = None
+
+    context['profile'] = profile
+    return render(request, 'profile.html', context)
+
 
 def contact(request):
     profile = get_user_profile()
@@ -32,22 +51,6 @@ def contact(request):
                 context['success_message'] = 'Your message has been sent successfully.'
         return render(request, 'contact.html', context)
     return render(request, 'contact.html', context)
-
-def profile(request, id = None): # perfected
-
-    profile = None
-    if id is not None:
-        profile = Profile.objects.get(id=id)
-    elif request.user.is_authenticated:
-        try:
-            profile = request.user.profile
-        except Profile.DoesNotExist:
-            print('\nNo profile object found.\n')
-
-    context = {
-        "profile": profile,
-    }
-    return render(request, 'profile.html', context)
 
 def projects(request):
     profile = get_user_profile()
