@@ -73,23 +73,13 @@
             <h1 class="hero-name mb-4">{{ profile.full_name }}</h1>
             <p class="section-copy mb-4">{{ profile.bio|default:'I build fast, useful, and human-friendly digital products with clean code and thoughtful design.' }}</p>
             <div class="d-flex flex-wrap gap-3">
-              <a href="{% if profile_username %}
-                  {% url 'username_projects' profile_username %}
-                {% else %}
-                  {% url 'projects' %}
-                {% endif %}"
-                class="btn btn-brand px-4 py-3">
+              <a href="{% url 'projects' username %}" class="btn btn-brand px-4 py-3">
                 View Projects
               </a>
-              <a href="{% if profile_username %}
-                  {% url 'username_resume' profile_username %}
-                {% else %}
-                  {% url 'resume' %}
-                {% endif %}"
-                class="btn btn-outline-brand px-4 py-3">
+              <a href="{% url 'resume' username %}" class="btn btn-outline-brand px-4 py-3">
                 Resume
               </a>
-              <a href="{% url 'contact' request.user.username %}" class="btn btn-light border px-4 py-3">Contact</a>
+              <a href="{% url 'contact' username %}" class="btn btn-light border px-4 py-3">Contact</a>
             </div>
           </div>
           <div class="col-lg-5 text-center reveal reveal-delay-1">
@@ -141,12 +131,7 @@
             <div class="eyebrow mb-2">Selected work</div>
             <h2 class="section-title mb-0">Projects with purpose.</h2>
           </div>
-          <a href="{% if profile_username %}
-              {% url 'username_projects' profile_username %}
-            {% else %}
-              {% url 'projects' %}
-            {% endif %}"
-            class="btn btn-outline-brand align-self-md-end">
+          <a href="{% url 'projects' username %}" class="btn btn-outline-brand align-self-md-end">
             All Projects
           </a>
         </div>

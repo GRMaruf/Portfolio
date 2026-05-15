@@ -28,7 +28,7 @@
         <li class="nav-item">
           <a class="nav-link"
             href="{% if request.user %}
-              {% url 'projects' request.user.username %}
+              {% url 'projects' %}
             {% else %}
               #
             {% endif %}">
@@ -38,7 +38,7 @@
         <li class="nav-item">
           <a class="nav-link"
             href="{% if request.user %}
-              {% url 'resume' request.user.username %}
+              {% url 'resume' %}
             {% else %}
               #
             {% endif %}">
@@ -46,7 +46,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'contact' request.user.username %}">Contact</a>
+          <a class="nav-link" href="{% url 'contact' %}">Contact</a>
         </li>
         {% if request.user.is_authenticated %}
           <li class="nav-item">

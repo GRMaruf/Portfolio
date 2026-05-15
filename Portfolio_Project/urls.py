@@ -2,11 +2,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from portfolio.views import profile
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
-    path('', include('authentication.urls')),
-    path('', include('portfolio.urls')),
+    path('auth/', include('authentication.urls')),
+    path('portfolio/', include('portfolio.urls')),
+    path('', profile, name='profile'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

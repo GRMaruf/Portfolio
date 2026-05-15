@@ -23,6 +23,8 @@ def profile(request, username = None):
         profile = None
 
     context['profile'] = profile
+    context['username'] = username
+    print(username)
     return render(request, 'profile.html', context)
 
 @login_required

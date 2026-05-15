@@ -2,18 +2,18 @@ from django.urls import path
 from portfolio.views import *
 
 urlpatterns = [
-    path('<str:username>', profile, name='profile'),
-    path('', profile, name='profile'),
+    path('current_user/contact', contact, name='contact'),
+    path('current_user/projects', projects, name='projects'),
+    path('current_user/resume', resume, name='resume'),
     path('current_user/dashboard', dashboard, name='dashboard'),
-    path('dashboard/edit_profile', edit_profile, name='edit_profile'),
+    
+    path('<str:username>', profile, name='profile'),
+    
     path('<str:username>/contact', contact, name='contact'),
     path('<str:username>/projects', projects, name='projects'),
     path('<str:username>/resume', resume, name='resume'),
-    path('/contact', contact, name='contact'),
-    path('/projects', projects, name='projects'),
-    path('/resume', resume, name='resume'),
 
-
+    path('dashboard/edit_profile', edit_profile, name='edit_profile'),
     path('dashboard/add_tags', add_tags, name='add_tags'),
     path('dashboard/project', project, name='project'),
     path('dashboard/project/<int:id>', project, name='project'),

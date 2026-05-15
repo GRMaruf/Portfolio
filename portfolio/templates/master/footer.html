@@ -15,14 +15,14 @@
         <a href="{{ profile.website }}" target="_blank"><i class="fa fa-globe"></i></a>
       {% endif %}
       {% comment %} fa,.fa-brands,.fa-classic,.fa-regular,.fa-sharp,.fa-solid,.fab,.far,.fas {% endcomment %}
-      {% if request.user.email %}
-        <a href="{% url 'contact' request.user.username %}">
+      {% if profile.user.email %}
+        <a href="{% url 'contact' %}">
             <i class="fas fa-envelope"></i>
         </a>
       {% endif %}
     </div>
     <div>
-      <small>© Joined year</small>
+      <small>©{{ profile.user.date_joined|date:"Y"}}</small>
     </div>
   </div>
 </footer>
