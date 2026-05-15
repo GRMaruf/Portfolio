@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from portfolio.models import *
 from portfolio.forms import *
 from portfolio.utils import *
@@ -7,10 +7,14 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
 
+def home(request):
+    context={
+        'profile':get_user_profile(get_current_username(request))
+    }
+    return render(request, 'home.html', context)
 
 # Always pass a profile context while rendering html with nav and footer
 def profile(request, username=None):
-    set_cached_username(request, username)
     context = {}
 
     if username:
@@ -60,7 +64,6 @@ def edit_profile(request):
     return render(request, 'dashboard.html', context)
 
 def contact(request, username=None):
-    set_cached_username(request, username)
     profile = get_user_profile(username)
     context = {
         'profile': profile
@@ -87,7 +90,6 @@ def contact(request, username=None):
     return render(request, 'contact.html', context)
 
 def projects(request, username=None):
-    set_cached_username(request, username)
     profile = get_user_profile(username)
     context = {
         "profile": profile,
@@ -96,7 +98,6 @@ def projects(request, username=None):
     return render(request, 'projects.html', context)
 
 def resume(request, username=None):
-    set_cached_username(request, username)
     profile = get_user_profile(username)
     context = {
         "profile": profile,

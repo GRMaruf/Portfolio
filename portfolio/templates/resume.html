@@ -155,7 +155,7 @@
               <div class="eyebrow mb-2">ATS resume</div>
               <h1 class="h3 fw-bold mb-3">Ready for PDF and recruiters.</h1>
               <button type="button" class="btn btn-brand w-100 py-3 mb-2" onclick="window.print()">Print or Save PDF</button>
-              <a href="{% url 'contact' profile.user.username %}" class="btn btn-outline-brand w-100">Contact Page</a>
+              <a href="{% url 'contact' profile.user.username|default:'demo' %}" class="btn btn-outline-brand w-100">Contact Page</a>
             </div>
 
             <div class="print-note p-3">
@@ -184,7 +184,7 @@
                     <p class="h5 fw-bold mb-3">{{ profile.title|default:'Developer' }}</p>
                   </div>
                   <div class="text-md-end no-print">
-                    <a href="{% if profile_username %}{% url 'username_profile' profile_username %}{% else %}{% url 'profile' %}{% endif %}" class="btn btn-outline-brand">Portfolio</a>
+                    <a href="{% url 'profile' profile.user.username|default:'demo' %}" class="btn btn-outline-brand">Portfolio</a>
                   </div>
                 </div>
 

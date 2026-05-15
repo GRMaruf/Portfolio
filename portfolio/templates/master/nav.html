@@ -2,7 +2,7 @@
   <div class="container">
     <button class="btn btn-outline-brand d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar" aria-label="Open navigation">Menu</button>
 
-    <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'profile' profile.user.username|default:None %}">
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'profile' profile.user.username|default:'demo' %}">
       {% if profile.profile_image %}
         <img src="{{ profile.profile_image.url }}" class="rounded-circle me-2" width="32" height="32" alt="{{ profile.full_name }}" />
       {% else %}
@@ -14,19 +14,19 @@
     <div class="collapse navbar-collapse justify-content-end d-none d-lg-flex">
       <ul class="navbar-nav align-items-center gap-3">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'profile' %}">Home</a>
+          <a class="nav-link" href="{% url 'home' %}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'profile' profile.user.username|default:None %}">Profile</a>
+          <a class="nav-link" href="{% url 'profile' profile.user.username|default:'demo' %}">Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'projects' profile.user.username|default:None %}">Projects</a>
+          <a class="nav-link" href="{% url 'projects' profile.user.username|default:'demo' %}">Projects</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'resume' profile.user.username|default:None %}">Resume</a>
+          <a class="nav-link" href="{% url 'resume' profile.user.username|default:'demo' %}">Resume</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'contact' profile.user.username|default:None %}">Contact</a>
+          <a class="nav-link" href="{% url 'contact' profile.user.username|default:'demo' %}">Contact</a>
         </li>
         {% if request.user.is_authenticated %}
           <li class="nav-item">
