@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE, null=True)
 
-    full_name = models.CharField(max_length=120)
+    full_name = models.CharField(max_length=120, default='')
     display_name = models.CharField(max_length=80, blank=True)
     title = models.CharField(max_length=120, blank=True)  # e.g. "Backend Developer"
     bio = models.TextField(blank=True)

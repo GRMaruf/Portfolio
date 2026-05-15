@@ -3,8 +3,8 @@
     <button class="btn btn-outline-brand d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar" aria-label="Open navigation">Menu</button>
 
     <a class="navbar-brand fw-bold d-flex align-items-center" href="{% if profile_username %}{% url 'username_profile' profile_username %}{% else %}{% url 'profile' %}{% endif %}">
-      <img src="/media/app/logo.png" alt="Logo" width="34" height="34" class="me-2 rounded" />
-      <span>{{ profile.display_name|default:profile.full_name|default:'Portfolio' }}</span>
+      <img src="/media/app/logo.webp" alt="Logo" width="34" height="34" class="me-2 rounded" />
+      <span>{{ profile.display_name|default:'Portfolio' }}</span>
     </a>
 
     <div class="collapse navbar-collapse justify-content-end d-none d-lg-flex">
@@ -62,7 +62,7 @@
         <img src="/media/app/avatar.png" class="rounded-circle" width="42" height="42" alt="Profile avatar" />
       {% endif %}
       <div>
-        <div class="fw-semibold" id="sidebarLabel">{{ profile.display_name|default:profile.full_name|default:'Portfolio' }}</div>
+        <div class="fw-semibold" id="sidebarLabel">{{ profile.display_name|default:'Portfolio' }}</div>
         <small class="opacity-75">{{ profile.title|default:'Developer Portfolio' }}</small>
       </div>
     </div>

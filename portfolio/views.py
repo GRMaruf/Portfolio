@@ -7,50 +7,42 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
 
-def public_profile(request):
-    if request.user.is_authenticated:
-        try:
-            return request.user.profile
-        except Profile.DoesNotExist:
-            pass
-    return Profile.objects.first()
-
-def test(request):
-    return render(request, 'test.html')
+def get_user_profile(username=None):
+    return Profile.objects.filter(user__username=username).first()
 
 def contact(request):
-    profile = public_profile(request)
+    profile = get_user_profile()
     context = {'profile': profile}
     subject = "Important! Someone has contacted you through your portfolio."
-    recipient_list = [profile.email] if profile and profile.email else [settings.EMAIL_HOST_USER]
+    recipient_list = [profile.email] if profile else []
 
     if request.method == 'POST':
         name = request.POST.get('name')
         email = request.POST.get('email')
         message = request.POST.get('message')
-        message = f'Name: {name}\nEmail: {email}\nMessage: {message}'
-        send_mail(
-            subject,
-            message,
-            settings.EMAIL_HOST_USER,
-            recipient_list,
-            fail_silently=False,
-        )
-        context['success_message'] = 'Your message has been sent successfully.'
+        message = f'Name: {name}\nEmail: {email}\nMessage: \n{message}'
+        if profile:
+                send_mail(
+                    subject,
+                    message,
+                    settings.EMAIL_HOST_USER,
+                    recipient_list,
+                    fail_silently=False,
+                )
+                context['success_message'] = 'Your message has been sent successfully.'
         return render(request, 'contact.html', context)
     return render(request, 'contact.html', context)
 
 def profile(request, id = None): # perfected
 
-    if id:
+    profile = None
+    if id is not None:
         profile = Profile.objects.get(id=id)
     elif request.user.is_authenticated:
         try:
             profile = request.user.profile
         except Profile.DoesNotExist:
-            profile = None
-    else:
-        profile = Profile.objects.first()
+            print('\nNo profile object found.\n')
 
     context = {
         "profile": profile,
@@ -58,7 +50,7 @@ def profile(request, id = None): # perfected
     return render(request, 'profile.html', context)
 
 def projects(request):
-    profile = public_profile(request)
+    profile = get_user_profile()
     context = {
         "profile": profile,
         "projects": profile.projects.all() if profile else Project.objects.none(),
@@ -66,7 +58,7 @@ def projects(request):
     return render(request, 'projects.html', context)
 
 def resume(request):
-    profile = public_profile(request)
+    profile = get_user_profile()
     context = {
         "profile": profile,
     }
@@ -132,7 +124,7 @@ def add_tags(request, id = None): # perfected
     context = {
         'heading': 'Tags',
         'action': 'Add',
-        'profile': public_profile(request),
+        'profile': get_user_profile(),
     }
     
     if id:

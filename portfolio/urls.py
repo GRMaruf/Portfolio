@@ -2,7 +2,8 @@ from django.urls import path
 from portfolio.views import *
 
 urlpatterns = [
-    path('test', test, name='test'),
+    # path('test', test, name='test'),
+    path('<str:username>', profile, name='profile'),
     path('', profile, name='profile'),
     path('profile/<str:id>', profile, name='profile'),
     path('projects', projects, name='projects'),
