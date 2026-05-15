@@ -1,22 +1,28 @@
 <footer class="footer py-4 bg-white">
-  <div class="container d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+  <div class="container">
     <div>
       <div class="fw-bold text-dark">{{ profile.display_name|default:'Portfolio' }}</div>
-      <small>Modern portfolio, practical work, clean resume.</small>
+      <small>{{ profile.title }}</small>
     </div>
-    <div class="d-flex flex-wrap gap-3">
+    <div class="social-links my-3">
       {% if profile.github %}
-        <a href="{{ profile.github }}" target="_blank" rel="noreferrer" class="text-decoration-none">GitHub</a>
+        <a href="{{ profile.github }}" target="_blank"><i class="fab fa-github"></i></a>
       {% endif %}
       {% if profile.linkedin %}
-        <a href="{{ profile.linkedin }}" target="_blank" rel="noreferrer" class="text-decoration-none">LinkedIn</a>
+        <a href="{{ profile.linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a>
       {% endif %}
       {% if profile.website %}
-        <a href="{{ profile.website }}" target="_blank" rel="noreferrer" class="text-decoration-none">Website</a>
+        <a href="{{ profile.website }}" target="_blank"><i class="fa fa-globe"></i></a>
       {% endif %}
-      {% if profile.email %}
-        <a href="mailto:{{ profile.email }}" class="text-decoration-none">Email</a>
+      {% comment %} fa,.fa-brands,.fa-classic,.fa-regular,.fa-sharp,.fa-solid,.fab,.far,.fas {% endcomment %}
+      {% if request.user.email %}
+        <a href="{% url 'contact' request.user.username %}">
+            <i class="fas fa-envelope"></i>
+        </a>
       {% endif %}
+    </div>
+    <div>
+      <small>© Joined year</small>
     </div>
   </div>
 </footer>

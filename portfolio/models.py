@@ -9,12 +9,12 @@ class Profile(models.Model):
     title = models.CharField(max_length=120, blank=True)  # e.g. "Backend Developer"
     bio = models.TextField(blank=True)
     
-    email = models.EmailField(blank=True)
     phone = models.CharField(max_length=20, blank=True)
     location = models.CharField(max_length=120, blank=True)
 
     profile_image = models.ImageField(upload_to="profile_images/", blank=True, null=True)
 
+    #  you can use Choose URL Type system
     github = models.URLField(blank=True)
     linkedin = models.URLField(blank=True)
     website = models.URLField(blank=True)

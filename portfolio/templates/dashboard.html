@@ -181,7 +181,7 @@
 
       <div class="row g-3 mb-5">
         <div class="col-6 col-md-4 col-xl-3">
-          <a class="dash-action" href="{% url 'edit_profile' %}">
+          <a class="dash-action" href="{% url 'edit_profile' request.user.username %}">
             <span class="dash-icon">P</span>
             <div class="fw-bold">Profile</div>
             <div class="muted small">Name, title, bio, links</div>

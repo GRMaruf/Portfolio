@@ -1,14 +1,24 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from portfolio.models import *
 from portfolio.forms import *
-
 from django.contrib.auth.decorators import login_required
 # for sending email
 from django.core.mail import send_mail
 from django.conf import settings
+# for cache control
+from django.core.cache import cache
+
 
 def get_username(request):
     return request.user.username
+
+# cache.set('var', value, timeout=60*15) # time set is 15 minutes 
+def set_cached_username(username):
+    cache.set('cached_username', username)
+
+# var = cache.get('var', 0) # default value is 0
+def get_cached_username():
+    return cache.get('cached_username')
 
 def get_user_profile(username=None):
     return Profile.objects.filter(user__username=username).first()
@@ -28,8 +38,40 @@ def profile(request, username = None):
     context['profile'] = profile
     return render(request, 'profile.html', context)
 
+@login_required
+def dashboard(request, username):
+    return redirect('edit_profile', username)
 
-def contact(request):
+
+@login_required
+def edit_profile(request, username): # perfected
+    context = {
+        'heading': 'Profile',
+        'action': 'Update'
+    }
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        profile = None
+        context['action'] = 'Create'
+    context['profile'] = profile
+    
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance = profile)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.user = request.user
+            form.save()
+        else:
+            context['form'] = form
+            return render(request, 'dashboard.html', context)
+    
+    form = ProfileForm(instance = profile)
+    context['form'] = form
+    return render(request, 'dashboard.html', context)
+
+def contact(request, username):
+    # user = get_user_profile(User)
     profile = get_user_profile()
     context = {'profile': profile}
     subject = "Important! Someone has contacted you through your portfolio."
@@ -92,36 +134,6 @@ def username_resume(request, username):
     }
     return render(request, 'resume.html', context)
 
-@login_required
-def dashboard(request): # perfected, only redirection will ok
-    return redirect('edit_profile')
-
-@login_required
-def edit_profile(request): # perfected
-    context = {
-        'heading': 'Profile',
-        'action': 'Update'
-    }
-    try:
-        profile = request.user.profile
-    except Profile.DoesNotExist:
-        profile = None
-        context['action'] = 'Create'
-    context['profile'] = profile
-    
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES, instance = profile)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.user = request.user
-            form.save()
-        else:
-            context['form'] = form
-            return render(request, 'dashboard.html', context)
-    
-    form = ProfileForm(instance = profile)
-    context['form'] = form
-    return render(request, 'dashboard.html', context)
 
 def add_tags(request, id = None): # perfected
     context = {

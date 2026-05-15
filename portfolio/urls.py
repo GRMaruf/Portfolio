@@ -4,14 +4,14 @@ from portfolio.views import *
 urlpatterns = [
     path('<str:username>', profile, name='profile'),
     path('', profile, name='profile'),
+    path('<str:username>/dashboard', dashboard, name='dashboard'),
+    path('<str:username>/edit_profile', edit_profile, name='edit_profile'),
+    path('<str:username>/contact', contact, name='contact'),
 
-    
 
     path('projects', projects, name='projects'),
     path('resume', resume, name='resume'),
-    path('dashboard', dashboard, name='dashboard'),
-
-    path('edit_profile', edit_profile, name='edit_profile'),
+    # path('edit_profile', edit_profile, name='edit_profile'),
     path('add_tags', add_tags, name='add_tags'),
     
     path('project', project, name='project'),
@@ -32,8 +32,6 @@ urlpatterns = [
     path('testimonial', testimonial, name='testimonial'),
     path('testimonial/<int:id>', testimonial, name='testimonial'),
     path('testimonial_delete/<int:id>', testimonial_delete, name='testimonial_delete'),
-
-    path('contact', contact, name='contact'),
 
     # Public username portfolio URLs. Keep these last so fixed routes above win.
     path('<str:username>/projects', username_projects, name='username_projects'),

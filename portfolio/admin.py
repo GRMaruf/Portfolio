@@ -3,8 +3,8 @@ from .models import *
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("full_name", "display_name", "email", "location", "created_at")
-    search_fields = ("full_name", "display_name", "email")
+    list_display = ("full_name", "display_name", "location", "created_at")
+    search_fields = ("full_name", "display_name")
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):

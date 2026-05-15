@@ -89,7 +89,7 @@
                 class="btn btn-outline-brand px-4 py-3">
                 Resume
               </a>
-              <a href="{% url 'contact' %}" class="btn btn-light border px-4 py-3">Contact</a>
+              <a href="{% url 'contact' request.user.username %}" class="btn btn-light border px-4 py-3">Contact</a>
             </div>
           </div>
           <div class="col-lg-5 text-center reveal reveal-delay-1">
@@ -279,13 +279,14 @@
           <div class="eyebrow mb-2">Portfolio setup</div>
           {% if no_profile_error %}
             <h1 class="section-title">No profile exists with this username.</h1>
-            <p class="section-copy mb-4">Please search with a correct username.</p>
-          {% elif request.user.is_authenticated %}
-            <h1 class="section-title">Create a profile to launch the site.</h1>
-            <p class="section-copy mb-4">Once a profile exists, this page becomes a polished public portfolio automatically.</p>
-            <a href="{% url 'edit_profile' %}" class="btn btn-brand px-4 py-3">Edit Profile</a>
+            <p class="section-copy mb-4">Please update your profile or search with a correct username.</p>
+            {% endif %}
+          {% if request.user.is_authenticated %}
+            <a href="{% url 'edit_profile' request.user.username %}" class="btn btn-brand px-4 py-3">Update Profile</a>
           {% else %}
-          <a href="{% url 'login' %}" class="btn btn-brand px-4 py-3">Login</a>
+            <h1 class="section-title">Create a profile to launch the site.</h1>
+            <a href="{% url 'login' %}" class="btn btn-brand px-4 py-3 my-3">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-outline-brand px-4 py-3 my-3">Register</a>
           {% endif %}
         </div>
       </div>
