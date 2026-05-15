@@ -16,13 +16,13 @@
       {% endif %}
       {% comment %} fa,.fa-brands,.fa-classic,.fa-regular,.fa-sharp,.fa-solid,.fab,.far,.fas {% endcomment %}
       {% if profile.user.email %}
-        <a href="{% url 'contact' %}">
+        <a href="{% url 'contact' profile.user.username %}">
             <i class="fas fa-envelope"></i>
         </a>
       {% endif %}
     </div>
     <div>
-      <small>©{{ profile.user.date_joined|date:"Y"}}</small>
+      <small>Member since ©{{ profile.user.date_joined|date:"Y"}}</small>
     </div>
   </div>
 </footer>

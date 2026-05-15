@@ -9,7 +9,7 @@ from django.conf import settings
 
 
 # Always pass a profile context while rendering html with nav and footer
-def profile(request, username = None):
+def profile(request, username=None):
     set_cached_username(request, username)
     context = {}
 

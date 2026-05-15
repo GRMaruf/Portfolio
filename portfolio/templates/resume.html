@@ -155,7 +155,7 @@
               <div class="eyebrow mb-2">ATS resume</div>
               <h1 class="h3 fw-bold mb-3">Ready for PDF and recruiters.</h1>
               <button type="button" class="btn btn-brand w-100 py-3 mb-2" onclick="window.print()">Print or Save PDF</button>
-              <a href="{% url 'contact' %}" class="btn btn-outline-brand w-100">Contact Page</a>
+              <a href="{% url 'contact' profile.user.username %}" class="btn btn-outline-brand w-100">Contact Page</a>
             </div>
 
             <div class="print-note p-3">

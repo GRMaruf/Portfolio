@@ -144,9 +144,9 @@
           </div>
           <div class="col-lg-4">
             <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
-              <a href="{% url 'profile' %}" class="btn btn-light">View Site</a>
-              <a href="{% url 'resume' %}" class="btn btn-outline-light">Resume</a>
-              <a href="{% url 'projects' %}" class="btn btn-outline-light">Projects</a>
+              <a href="{% url 'profile' request.user.username %}" class="btn btn-light">View Site</a>
+              <a href="{% url 'resume' request.user.username %}" class="btn btn-outline-light">Resume</a>
+              <a href="{% url 'projects' request.user.username %}" class="btn btn-outline-light">Projects</a>
             </div>
           </div>
         </div>
