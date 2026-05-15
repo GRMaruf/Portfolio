@@ -225,6 +225,9 @@
                 </div>
               </section>
 
+              
+              {% if profile.experiences.all %}
+              {% comment %} Hide experience section for freshers. {% endcomment %}
               <section class="resume-section mb-4">
                 <h2>Professional Experience</h2>
                 {% for exp in profile.experiences.all %}
@@ -242,6 +245,8 @@
                   <p class="mb-0">Add experience in the dashboard.</p>
                 {% endfor %}
               </section>
+              {% endif %}
+                
 
               <section class="resume-section mb-4">
                 <h2>Selected Projects</h2>
