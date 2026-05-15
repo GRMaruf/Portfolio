@@ -1,29 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from portfolio.models import *
 from portfolio.forms import *
+from portfolio.utils import *
 from django.contrib.auth.decorators import login_required
 # for sending email
 from django.core.mail import send_mail
 from django.conf import settings
-# for cache control
-from django.core.cache import cache
 
 
-def get_username(request):
-    return request.user.username
-
-# cache.set('var', value, timeout=60*15) # time set is 15 minutes 
-def set_cached_username(username):
-    cache.set('cached_username', username)
-
-# var = cache.get('var', 0) # default value is 0
-def get_cached_username():
-    return cache.get('cached_username')
-
-def get_user_profile(username=None):
-    return Profile.objects.filter(user__username=username).first()
-
+# Always pass a profile context while rendering html with nav and footer
 def profile(request, username = None):
+    set_cached_username(request, username)
     context = {}
 
     if username:
@@ -31,7 +18,7 @@ def profile(request, username = None):
         if profile is None:
             context['no_profile_error'] = True
     elif request.user.is_authenticated:
-        return redirect('profile', username=get_username(request))
+        return redirect('profile', username=get_current_username(request))
     else:
         profile = None
 
@@ -39,12 +26,12 @@ def profile(request, username = None):
     return render(request, 'profile.html', context)
 
 @login_required
-def dashboard(request, username):
-    return redirect('edit_profile', username)
+def dashboard(request):
+    return redirect('edit_profile')
 
 
 @login_required
-def edit_profile(request, username): # perfected
+def edit_profile(request):
     context = {
         'heading': 'Profile',
         'action': 'Update'
@@ -70,12 +57,15 @@ def edit_profile(request, username): # perfected
     context['form'] = form
     return render(request, 'dashboard.html', context)
 
-def contact(request, username):
-    # user = get_user_profile(User)
-    profile = get_user_profile()
-    context = {'profile': profile}
+def contact(request, username=None):
+    set_cached_username(request, username)
+    profile = get_user_profile(username)
+    context = {
+        'profile': profile
+    }
+
     subject = "Important! Someone has contacted you through your portfolio."
-    recipient_list = [profile.email] if profile else []
+    recipient_list = [profile.user.email] if profile else []
 
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -94,52 +84,33 @@ def contact(request, username):
         return render(request, 'contact.html', context)
     return render(request, 'contact.html', context)
 
-def projects(request):
-    profile = get_user_profile()
+def projects(request, username=None):
+    set_cached_username(request, username)
+    profile = get_user_profile(username)
     context = {
         "profile": profile,
         "projects": profile.projects.all() if profile else Project.objects.none(),
     }
     return render(request, 'projects.html', context)
 
-def resume(request):
-    profile = get_user_profile()
+def resume(request, username=None):
+    set_cached_username(request, username)
+    profile = get_user_profile(username)
     context = {
         "profile": profile,
-    }
-    return render(request, 'resume.html', context)
-
-def username_profile(request, username):
-    profile = get_object_or_404(Profile, user__username=username)
-    context = {
-        "profile": profile,
-        "profile_username": username,
-    }
-    return render(request, 'profile.html', context)
-
-def username_projects(request, username):
-    profile = get_object_or_404(Profile, user__username=username)
-    context = {
-        "profile": profile,
-        "profile_username": username,
-        "projects": profile.projects.all(),
-    }
-    return render(request, 'projects.html', context)
-
-def username_resume(request, username):
-    profile = get_object_or_404(Profile, user__username=username)
-    context = {
-        "profile": profile,
-        "profile_username": username,
     }
     return render(request, 'resume.html', context)
 
 
 def add_tags(request, id = None): # perfected
+    try:
+        profile = request.user.profile
+    except:
+        return redirect('edit_profile')
     context = {
         'heading': 'Tags',
         'action': 'Add',
-        'profile': get_user_profile(),
+        'profile': profile,
     }
     
     if id:
