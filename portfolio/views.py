@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
 
+
 def home(request):
     context={
         'profile':get_user_profile(get_current_username(request))

@@ -46,3 +46,8 @@ class TestimonialAdmin(admin.ModelAdmin):
     list_display = ("name", "position", "created_at", "rating")
     search_fields = ("name", "position")
     list_filter = ("rating",)
+
+@admin.register(Reference)
+class ReferenceAdmin(admin.ModelAdmin):
+    list_display = ("name", "position", "email","created_at")
+    search_fields = ("name", "position")

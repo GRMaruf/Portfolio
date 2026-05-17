@@ -9,6 +9,7 @@ class Profile(models.Model):
     title = models.CharField(max_length=120, blank=True)  # e.g. "Backend Developer"
     bio = models.TextField(blank=True)
     
+    email = models.EmailField(blank=True)
     phone = models.CharField(max_length=20, blank=True)
     location = models.CharField(max_length=120, blank=True)
 
@@ -138,3 +139,21 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return f"Testimonial from {self.name}"
+    
+class Reference(models.Model):
+    profile = models.ForeignKey(
+        "Profile",
+        on_delete=models.CASCADE,
+        related_name="references"
+    )
+
+    name = models.CharField(max_length=120)
+    position = models.CharField(max_length=120, blank=True)  # e.g. "CEO at XYZ"
+    location = models.CharField(max_length=120, blank=True)  
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=20, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Referenced by {self.name}"
