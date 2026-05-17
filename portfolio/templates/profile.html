@@ -68,21 +68,27 @@
     <section class="hero">
       <div class="container">
         <div class="row align-items-center g-5">
-          <div class="col-lg-7 reveal">
-            <div class="eyebrow mb-3">{{ profile.title|default:'Full Stack Developer' }}</div>
+          <div class="col-lg-7 order-2 order-lg-1 reveal">
+            <div class="eyebrow mb-3">{{ profile.title|default:'Profile Title' }}</div>
+
             <h1 class="hero-name mb-4">{{ profile.full_name }}</h1>
-            <p class="section-copy mb-4">{{ profile.bio|default:'I build fast, useful, and human-friendly digital products with clean code and thoughtful design.' }}</p>
+
+            <p class="section-copy mb-4">{{ profile.bio|default:'Profile Bio' }}</p>
+
             <div class="d-flex flex-wrap gap-3">
               <a href="{% url 'projects' username %}" class="btn btn-brand px-4 py-3">View Projects</a>
+
               <a href="{% url 'resume' username %}" class="btn btn-outline-brand px-4 py-3">Resume</a>
+
               <a href="{% url 'contact' username %}" class="btn btn-light border px-4 py-3">Contact</a>
             </div>
           </div>
-          <div class="col-lg-5 text-center reveal reveal-delay-1">
+
+          <div class="col-lg-5 text-center order-1 order-lg-2 reveal reveal-delay-1">
             {% if profile.profile_image %}
               <img src="{{ profile.profile_image.url }}" class="portrait" alt="{{ profile.full_name }}" />
             {% else %}
-              <img src="/media/app/avatar.png" class="portrait" alt="{{ profile.full_name }}" />
+              <img src="/media/app/logo.webp" class="portrait" alt="{{ profile.full_name }}" />
             {% endif %}
           </div>
         </div>
@@ -180,7 +186,7 @@
         <div class="surface p-5">
           <div class="row g-md-4">
             <div class="col-md-6">
-              <div class="timeline-item p-4">
+              <div class="timeline-item px-4">
                 {% for skill in profile.skills.all|slice:':7' %}
                   <span class="tag-pill my-2">
                     {{ skill.name }}{% if skill.level %}
@@ -194,7 +200,7 @@
               </div>
             </div>
             <div class="col-md-6">
-              <div class="timeline-item p-4">
+              <div class="timeline-item px-4">
                 {% for skill in profile.skills.all|slice:'7:' %}
                   <span class="tag-pill my-2">
                     {{ skill.name }}{% if skill.level %}
