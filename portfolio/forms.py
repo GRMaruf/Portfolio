@@ -118,3 +118,17 @@ class TestimonialForm(forms.ModelForm):
                 'class': 'form-control'
             })
 
+class ReferenceForm(forms.ModelForm):
+    class Meta:
+        model = Reference
+        fields = '__all__'
+        exclude = ['profile',]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for x in self.fields.values():
+            x.widget.attrs.update({
+                'class': 'form-control'
+            })
+

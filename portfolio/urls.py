@@ -30,4 +30,7 @@ urlpatterns = [
     path('dashboard/testimonial', testimonial, name='testimonial'),
     path('dashboard/testimonial/<int:id>', testimonial, name='testimonial'),
     path('dashboard/testimonial_delete/<int:id>', testimonial_delete, name='testimonial_delete'),
+    path('dashboard/reference', reference, name='reference'),
+    path('dashboard/reference/<int:id>', reference, name='reference'),
+    path('dashboard/reference_delete/<int:id>', reference_delete, name='reference_delete'),
 ]

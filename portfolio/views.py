@@ -400,3 +400,46 @@ def testimonial_delete(request, id):
         print('User verified.. True')
         testimonial.delete()
         return redirect('testimonial')
+
+@login_required
+def reference(request, id=None):
+    try:
+        profile = request.user.profile
+    except:
+        return redirect('edit_profile')
+    
+    context = {
+        'references': profile.references.all(),
+        'heading': 'Reference',
+        'action': 'Update',
+        'profile': profile,
+    }
+
+    if id:
+        object = Reference.objects.get(id=id)
+    else:
+        object = None
+        context['action'] = 'Create'
+    
+    if request.method == 'POST':
+        form = ReferenceForm(request.POST, instance = object)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.profile = profile
+            form.save()
+        else:
+            context['form'] = form
+            return render(request, 'dashboard.html', context)
+    
+    form = ReferenceForm(instance = object)
+    context['form'] = form
+    return render(request, 'dashboard.html', context)
+
+@login_required
+def reference_delete(request, id):
+    profile = request.user.profile
+    reference = Reference.objects.get(id=id)
+    if reference.profile == profile:
+        print('User verified.. True')
+        reference.delete()
+        return redirect('reference')
