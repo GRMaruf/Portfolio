@@ -12,7 +12,7 @@
       display: flex;
       align-items: center;
     }
-
+    
     .landing-title {
       font-size: clamp(2.8rem, 8vw, 6rem);
       font-weight: 900;
@@ -20,21 +20,21 @@
       letter-spacing: 0;
       margin-bottom: 1.5rem;
     }
-
+    
     .landing-copy {
       color: var(--muted);
       font-size: clamp(1.05rem, 2vw, 1.25rem);
       line-height: 1.8;
       max-width: 680px;
     }
-
+    
     .landing-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
       margin-top: 2rem;
     }
-
+    
     .intro-panel {
       background: rgba(255, 255, 255, 0.88);
       border: 1px solid rgba(221, 229, 238, 0.9);
@@ -42,11 +42,9 @@
       box-shadow: var(--shadow);
       padding: 1.25rem;
     }
-
+    
     .intro-preview {
-      background:
-        linear-gradient(135deg, rgba(15, 118, 110, 0.16), rgba(217, 119, 6, 0.16)),
-        #fff;
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.16), rgba(217, 119, 6, 0.16)), #fff;
       border: 1px solid var(--line);
       border-radius: 8px;
       min-height: 420px;
@@ -54,55 +52,54 @@
       position: relative;
       overflow: hidden;
     }
-
+    
     .preview-topbar {
       display: flex;
       gap: 0.45rem;
       margin-bottom: 2.25rem;
     }
-
+    
     .preview-dot {
       background: #cfd8e3;
       border-radius: 50%;
       height: 10px;
       width: 10px;
     }
-
+    
     .preview-card {
       background: rgba(255, 255, 255, 0.9);
       border: 1px solid rgba(221, 229, 238, 0.9);
       border-radius: 8px;
       padding: 1.25rem;
     }
-
+    
     .preview-avatar {
       aspect-ratio: 1;
-      background:
-        linear-gradient(135deg, rgba(15, 118, 110, 0.88), rgba(217, 119, 6, 0.82));
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.88), rgba(217, 119, 6, 0.82));
       border-radius: 8px;
       width: 96px;
     }
-
+    
     .preview-line {
       background: #dce5ee;
       border-radius: 999px;
       height: 12px;
       margin-bottom: 0.75rem;
     }
-
+    
     .preview-line.short {
       width: 58%;
     }
-
+    
     .feature-strip {
       border-top: 1px solid rgba(221, 229, 238, 0.8);
       padding: 36px 0 72px;
     }
-
+    
     .feature-item {
       min-height: 150px;
     }
-
+    
     .feature-icon {
       align-items: center;
       background: #e7f6f3;
@@ -115,17 +112,17 @@
       margin-bottom: 1rem;
       width: 44px;
     }
-
+    
     @media (max-width: 991.98px) {
       .landing-hero {
         min-height: auto;
       }
-
+    
       .intro-preview {
         min-height: 340px;
       }
     }
-
+    
     @media (max-width: 575.98px) {
       .landing-actions .btn {
         width: 100%;
@@ -135,35 +132,43 @@
 {% endblock %}
 
 {% block content %}
+  <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'profile' profile.user.username|default:'demo' %}">
+        <span>Portfolio Maker</span>
+      </a>
+      <div class="collapse navbar-collapse justify-content-end d-none d-lg-flex">
+        <ul class="navbar-nav align-items-center gap-3">
+          <li class="nav-item">
+            <a class="btn btn-brand px-3" href="{% url 'register' %}">Get Started</a>
+            <a class="btn btn-outline-brand px-3" href="{% url 'login' %}">Login</a>
+            <a class="btn btn-outline-brand px-3" href="{% url 'profile' 'demo' %}">Watch Demo</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
   <section class="landing-hero">
     <div class="container">
       <div class="row align-items-center g-5">
         <div class="col-lg-7 reveal">
           <div class="eyebrow mb-3">Personal Portfolio</div>
           <h1 class="landing-title">Build a sharp first impression.</h1>
-          <p class="landing-copy">
-            A clean introduction page for presenting your work, skills, resume, and contact details with confidence. Simple to manage, easy to scan, and polished enough for clients, recruiters, and collaborators.
-          </p>
+          <p class="landing-copy">A clean introduction page for presenting your work, skills, resume, and contact details with confidence. Simple to manage, easy to scan, and polished enough for clients, recruiters, and collaborators.</p>
           <div class="landing-actions">
             {% if request.user.is_authenticated %}
-              <a href="{% url 'edit_profile' %}" class="btn btn-brand px-4 py-3">
-                <i class="fa-solid fa-pen-to-square me-2"></i>Customize Portfolio
-              </a>
-              <a href="{% url 'dashboard' %}" class="btn btn-outline-brand px-4 py-3">
-                <i class="fa-solid fa-gauge-high me-2"></i>Dashboard
-              </a>
+              <a href="{% url 'edit_profile' %}" class="btn btn-brand px-4 py-3"><i class="fa-solid fa-pen-to-square me-2"></i>Customize Portfolio</a>
+              <a href="{% url 'dashboard' %}" class="btn btn-outline-brand px-4 py-3"><i class="fa-solid fa-gauge-high me-2"></i>Dashboard</a>
             {% else %}
-              <a href="{% url 'register' %}" class="btn btn-brand px-4 py-3">
-                <i class="fa-solid fa-user-plus me-2"></i>Get Started
-              </a>
-              <a href="{% url 'login' %}" class="btn btn-outline-brand px-4 py-3">
-                <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>Login
-              </a>
+              <a href="{% url 'register' %}" class="btn btn-brand px-4 py-3"><i class="fa-solid fa-user-plus me-2"></i>Get Started</a>
+              <a href="{% url 'login' %}" class="btn btn-outline-brand px-4 py-3"><i class="fa-solid fa-arrow-right-to-bracket me-2"></i>Login</a>
+              <a href="{% url 'profile' 'demo' %}" class="btn btn-outline-brand px-4 py-3"><i class="fa-solid fa-arrows-to-circle me-2"></i>Watch Demo</a>
             {% endif %}
           </div>
         </div>
 
-        <div class="col-lg-5 reveal reveal-delay-1">
+        <div class="col-lg-5 d-none d-lg-block reveal reveal-delay-1">
           <div class="intro-panel">
             <div class="intro-preview">
               <div class="preview-topbar">
@@ -209,21 +214,27 @@
       <div class="row g-4">
         <div class="col-md-4">
           <div class="surface feature-item p-4 lift">
-            <div class="feature-icon"><i class="fa-solid fa-layer-group"></i></div>
+            <div class="feature-icon">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
             <h2 class="h5 fw-bold">Organized showcase</h2>
             <p class="muted mb-0">Present projects, skills, education, certificates, and experience in a structured portfolio flow.</p>
           </div>
         </div>
         <div class="col-md-4">
           <div class="surface feature-item p-4 lift">
-            <div class="feature-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+            <div class="feature-icon">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+            </div>
             <h2 class="h5 fw-bold">Responsive design</h2>
             <p class="muted mb-0">Looks clean on desktop, tablet, and mobile without making visitors work to understand who you are.</p>
           </div>
         </div>
         <div class="col-md-4">
           <div class="surface feature-item p-4 lift">
-            <div class="feature-icon"><i class="fa-solid fa-paper-plane"></i></div>
+            <div class="feature-icon">
+              <i class="fa-solid fa-paper-plane"></i>
+            </div>
             <h2 class="h5 fw-bold">Easy contact</h2>
             <p class="muted mb-0">Give people a clear path to reach you when your work catches their attention.</p>
           </div>
@@ -231,4 +242,23 @@
       </div>
     </div>
   </section>
+
+  <footer class="footer py-4 bg-white">
+    <div class="container">
+      <div>
+        <div class="fw-bold text-dark">Golam Rasul Maruf</div>
+        <small>Django Backend Developer</small>
+      </div>
+      <div class="social-links">
+        <a href="https://github.com/GRMaruf/" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/golam-rasul-maruf-91494a262/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://profile.pybrothers.top/portfolio/grmaruf" target="_blank"><i class="fa fa-globe"></i></a>
+        {% comment %}fa,.fa-brands,.fa-classic,.fa-regular,.fa-sharp,.fa-solid,.fab,.far,.fas{% endcomment %}
+        <a href="mailto:golamrasulmaruf@gmail.com"><i class="fas fa-envelope"></i></a>
+      </div>
+      <div>
+        <small>@2026 All Rights are Reserved.</small>
+      </div>
+    </div>
+  </footer>
 {% endblock %}

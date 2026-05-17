@@ -4,7 +4,7 @@
       <div class="fw-bold text-dark">{{ profile.display_name|default:'Portfolio' }}</div>
       <small>{{ profile.title }}</small>
     </div>
-    <div class="social-links my-3">
+    <div class="social-links">
       {% if profile.github %}
         <a href="{{ profile.github }}" target="_blank"><i class="fab fa-github"></i></a>
       {% endif %}

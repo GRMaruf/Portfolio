@@ -9,10 +9,7 @@ from django.conf import settings
 
 
 def home(request):
-    context={
-        'profile':get_user_profile(get_current_username(request))
-    }
-    return render(request, 'home.html', context)
+    return render(request, 'home.html')
 
 # Always pass a profile context while rendering html with nav and footer
 def profile(request, username=None):
