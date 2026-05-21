@@ -107,10 +107,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 # }
 
 # Email Settings
+# 587 + TLS ✅
+# or 465 + SSL
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST = 'mail.pybrothers.top'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
 
 # Gmail requires an App Password (NOT your Gmail login password)
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')

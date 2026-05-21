@@ -5,6 +5,7 @@ from portfolio.utils import *
 from django.contrib.auth.decorators import login_required
 # for sending email
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.conf import settings
 
 
@@ -67,14 +68,31 @@ def contact(request, username=None):
         'profile': profile
     }
 
-    subject = "Important! Someone has contacted you through your portfolio."
+    subject = "[Portfolio] Please Contact"
     recipient_list = [profile.user.email] if profile else []
 
     if request.method == 'POST':
         name = request.POST.get('name')
         email = request.POST.get('email')
         message = request.POST.get('message')
-        message = f'Name: {name}\nEmail: {email}\nMessage: \n{message}'
+        html_message = render_to_string(
+            'contact_email.html',
+            {
+                'user': profile.display_name,
+                'message': message,
+                'name': name,
+                'email': email
+            }
+        )
+        message = f'''
+        Dear {profile.display_name},
+        {message}
+
+        Contacted by,
+        {name}
+        {email}
+        '''
+
         if profile:
                 send_mail(
                     subject,
@@ -82,6 +100,7 @@ def contact(request, username=None):
                     settings.EMAIL_HOST_USER,
                     recipient_list,
                     fail_silently=False,
+                    html_message=html_message
                 )
                 context['success_message'] = 'Your message has been sent successfully.'
         return render(request, 'contact.html', context)
