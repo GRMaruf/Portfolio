@@ -44,6 +44,7 @@ class ProjectForm(forms.ModelForm):
             x.widget.attrs.update({
                 'class': 'form-control'
             })
+        self.fields['attach'].widget.attrs['class'] = 'form-check form-check-input ms-3 border-primary'
 
 class SkillForm(forms.ModelForm):
     class Meta:

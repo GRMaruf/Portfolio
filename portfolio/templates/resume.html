@@ -274,7 +274,8 @@
               <section class="resume-section mb-4">
                 <h2>Selected Projects</h2>
                 {% for project in profile.projects.all %}
-                  <div class="resume-item">
+                  {% if project.attach %}
+                    <div class="resume-item">
                     <div class="d-flex flex-column flex-md-row justify-content-between gap-1">
                       <h3 class="resume-role">{{ project.title }}</h3>
                       {% if project.start_date %}
@@ -298,8 +299,9 @@
                       {% endif %}
                     </p>
                   </div>
+                  {% endif %}
                 {% empty %}
-                  <p class="mb-0">Add projects in the dashboard.</p>
+                  <p class="mb-0">Add projects in the dashboard. Or, attach projects to CV from dashboard.</p>
                 {% endfor %}
               </section>
 

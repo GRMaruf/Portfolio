@@ -262,6 +262,7 @@
                   <th>Title</th>
                   <th>Status</th>
                   <th>Live</th>
+                  <th>Attach</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -272,6 +273,7 @@
                     <td class="fw-bold">{{ x.title }}</td>
                     <td><span class="status-dot"></span>{% if x.live_link %}Published{% else %}Draft{% endif %}</td>
                     <td>{% if x.live_link %}<a href="{{ x.live_link }}" target="_blank" rel="noreferrer">Visit</a>{% else %}<span class="muted">No link</span>{% endif %}</td>
+                    <td>{% if x.attach %}CV{% else %}Not attached{% endif %}</td>
                     <td>
                       <a href="{% url 'project' x.id %}" class="action-badge action-edit me-1">Edit</a>
                       <a href="{% url 'project_delete' x.id %}" class="action-badge action-delete">Delete</a>

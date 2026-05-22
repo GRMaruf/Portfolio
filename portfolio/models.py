@@ -48,6 +48,8 @@ class Project(models.Model):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
 
+    attach = models.BooleanField("Attach to CV (check)", default=False)
+
     def __str__(self):
         return self.title
 
