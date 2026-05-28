@@ -57,7 +57,7 @@
                 <p class="muted">{{ project.description }}</p>
                 <div class="d-flex flex-wrap gap-2 mb-4">
                   {% for tag in project.tags.all %}
-                    <span class="tag-pill">{{ tag.name }}</span>
+                    <span class="bg-warning">{{ tag.name }}</span>
                   {% endfor %}
                 </div>
                 <div class="d-flex flex-wrap gap-3">

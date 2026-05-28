@@ -18,12 +18,6 @@ class ProjectAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
-@admin.register(Skill)
-class SkillAdmin(admin.ModelAdmin):
-    list_display = ("name", "level", "profile")
-    list_filter = ("level",)
-    search_fields = ("name",)
-
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):
     list_display = ("position", "company", "start_date", "end_date")

@@ -13,6 +13,8 @@ class Profile(models.Model):
     phone = models.CharField(max_length=20, blank=True)
     location = models.CharField(max_length=120, blank=True)
 
+    resume_skills = models.TextField("Skills (Resume)", null=True, blank=True)
+
     profile_image = models.ImageField(upload_to="profile_images/", blank=True, null=True)
 
     #  you can use Choose URL Type system
@@ -52,23 +54,6 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
-
-class Skill(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="skills")
-
-    name = models.CharField(max_length=100)
-    
-    SKILL_LEVELS = [
-        ("beginner", "Beginner"),
-        ("intermediate", "Intermediate"),
-        ("advanced", "Advanced"),
-        ("expert", "Expert"),
-    ]
-
-    level = models.CharField(max_length=20, choices=SKILL_LEVELS, default="beginner")
-
-    def __str__(self):
-        return self.name
 
 class Experience(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="experiences")

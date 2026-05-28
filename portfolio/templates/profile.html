@@ -131,7 +131,7 @@
         <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-4">
           <div>
             <div class="eyebrow mb-2">Selected work</div>
-            <h2 class="section-title mb-0">Projects with purpose.</h2>
+            <h2 class="section-title mb-0">Projects with purpose</h2>
           </div>
           <a href="{% url 'projects' username %}" class="btn btn-outline-brand align-self-md-end">All Projects</a>
         </div>
@@ -180,38 +180,71 @@
         <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-4">
           <div>
             <div class="eyebrow mb-2">Capability</div>
-            <h2 class="section-title mb-0">A stack that stays practical.</h2>
+            <h2 class="section-title mb-0">A stack that stays practical</h2>
           </div>
         </div>
         <div class="surface p-5">
           <div class="row g-md-4">
-            <div class="col-md-6">
-              <div class="timeline-item px-4">
-                {% for skill in profile.skills.all|slice:':7' %}
-                  <span class="tag-pill my-2">
-                    {{ skill.name }}{% if skill.level %}
-                      - {{ skill.get_level_display }}
-                    {% endif %}
-                  </span>
+            <div class="col-md-4">
+                {% load custom_filters %}
+                {% if profile.resume_skills %}
+                {% for skill_set in profile.resume_skills|split_lines|first_third %}
+                  {% with parts=skill_set|split:':' %}
+                    <b>{{ parts.0|upper }}</b> 
+                    <div class="timeline-item px-4">
+                      <span class="tag-pill my-2 py-3">
+                      {% for x in parts.1|split:',' %}
+                        {{x}} <br>
+                      {% endfor %}
+                      </span>
+                    </div>
+                  {% endwith %}
                   <br />
                 {% empty %}
-                  <span class="muted">Add skills from your dashboard.</span>
+                  <span class="muted">Add skills in the dashboard.</span>
                 {% endfor %}
-              </div>
+                {% endif %}
+                  
             </div>
-            <div class="col-md-6">
-              <div class="timeline-item px-4">
-                {% for skill in profile.skills.all|slice:'7:' %}
-                  <span class="tag-pill my-2">
-                    {{ skill.name }}{% if skill.level %}
-                      - {{ skill.get_level_display }}
-                    {% endif %}
-                  </span>
+            <div class="col-md-4">
+              {% load custom_filters %}
+              {% if profile.resume_skills %}
+                {% for skill_set in profile.resume_skills|split_lines|second_third %}
+                  {% with parts=skill_set|split:':' %}
+                    <b>{{ parts.0|upper }}</b> 
+                    <div class="timeline-item px-4">
+                      <span class="tag-pill my-2 py-3">
+                      {% for x in parts.1|split:',' %}
+                        {{x}} <br>
+                      {% endfor %}
+                      </span>
+                    </div>
+                  {% endwith %}
                   <br />
                 {% empty %}
-                  <span class="muted">Add skills from your dashboard.</span>
+                  <span class="muted">Add skills in the dashboard.</span>
                 {% endfor %}
-              </div>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+              {% load custom_filters %}
+              {% if profile.resume_skills %}
+                {% for skill_set in profile.resume_skills|split_lines|third_third %}
+                  {% with parts=skill_set|split:':' %}
+                    <b>{{ parts.0|upper }}</b> 
+                    <div class="timeline-item px-4">
+                      <span class="tag-pill my-2 py-3">
+                      {% for x in parts.1|split:',' %}
+                        {{x}} <br>
+                      {% endfor %}
+                      </span>
+                    </div>
+                  {% endwith %}
+                  <br />
+                {% empty %}
+                  <span class="muted">Add skills in the dashboard.</span>
+                {% endfor %}
+                {% endif %}
             </div>
           </div>
         </div>
@@ -223,7 +256,7 @@
         <div class="row g-5">
           <div class="col-lg-6">
             <div class="eyebrow mb-2">Experience</div>
-            <h2 class="section-title mb-4">Work history.</h2>
+            <h2 class="section-title mb-4">Work history</h2>
             <div class="d-grid gap-4">
               {% for exp in profile.experiences.all %}
                 <div class="timeline-item">
@@ -249,7 +282,7 @@
           </div>
           <div class="col-lg-6">
             <div class="eyebrow mb-2">Proof</div>
-            <h2 class="section-title mb-4">Education and certificates.</h2>
+            <h2 class="section-title mb-4">Education & certificates</h2>
             <div class="d-grid gap-3">
               {% for edu in profile.education.all %}
                 <div class="surface p-4 lift">
@@ -284,13 +317,11 @@
         <div class="surface p-5 text-center">
           <div class="eyebrow mb-2">Portfolio setup</div>
           {% if no_profile_error %}
-            <h1 class="section-title">No profile exists with this username.</h1>
-            <p class="section-copy mb-4">Please update your profile or search with a correct username.</p>
+            <h1 class="section-title">Profile is not updated.</h1>
           {% endif %}
-          {% if request.user.is_authenticated %}
+          {% if profile.user == request.user %}
             <a href="{% url 'edit_profile' %}" class="btn btn-brand px-4 py-3">Update Profile</a>
           {% else %}
-            <h1 class="section-title">Create a profile to launch the site.</h1>
             <a href="{% url 'login' %}" class="btn btn-brand px-4 py-3 my-3">Login</a>
             <a href="{% url 'register' %}" class="btn btn-outline-brand px-4 py-3 my-3">Register</a>
           {% endif %}

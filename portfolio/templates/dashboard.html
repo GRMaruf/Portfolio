@@ -161,12 +161,6 @@
         </div>
         <div class="col-6 col-lg-3">
           <div class="surface p-3 h-100">
-            <div class="h3 fw-bold mb-0">{{ profile.skills.count|default:'0' }}</div>
-            <div class="muted small">Skills</div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-3">
-          <div class="surface p-3 h-100">
             <div class="h3 fw-bold mb-0">{{ profile.experiences.count|default:'0' }}</div>
             <div class="muted small">Experience</div>
           </div>
@@ -194,13 +188,7 @@
             <div class="muted small">Case studies and links</div>
           </a>
         </div>
-        <div class="col-6 col-md-4 col-xl-3">
-          <a class="dash-action" href="{% url 'skill' %}">
-            <span class="dash-icon">S</span>
-            <div class="fw-bold">Skills</div>
-            <div class="muted small">Tools and strengths</div>
-          </a>
-        </div>
+
         <div class="col-6 col-md-4 col-xl-3">
           <a class="dash-action" href="{% url 'experience' %}">
             <span class="dash-icon">E</span>
@@ -229,13 +217,13 @@
             <div class="muted small">Connection</div>
           </a>
         </div>
-        {% comment %} <div class="col-6 col-md-4 col-xl-3">
+        <div class="col-6 col-md-4 col-xl-3">
           <a class="dash-action" href="{% url 'testimonial' %}">
             <span class="dash-icon">T</span>
             <div class="fw-bold">Testimonials</div>
             <div class="muted small">Social proof</div>
           </a>
-        </div> {% endcomment %}
+        </div>
         <div class="col-6 col-md-4 col-xl-3">
           <a class="dash-action" href="{% url 'add_tags' %}">
             <span class="dash-icon">#</span>
@@ -277,43 +265,6 @@
                     <td>
                       <a href="{% url 'project' x.id %}" class="action-badge action-edit me-1">Edit</a>
                       <a href="{% url 'project_delete' x.id %}" class="action-badge action-delete">Delete</a>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      {% endif %}
-
-      {% if skills %}
-        <section class="surface p-3 p-md-4 mb-4">
-          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-            <div>
-              <h2 class="h4 fw-bold mb-1">Skills</h2>
-              <p class="muted mb-0">Short, searchable keywords for your resume.</p>
-            </div>
-            <a href="{% url 'skill' %}" class="btn btn-brand">Add Skill</a>
-          </div>
-          <div class="dash-table">
-            <table class="table align-middle">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Name</th>
-                  <th>Level</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for x in skills %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td class="fw-bold">{{ x.name }}</td>
-                    <td>{{ x.get_level_display }}</td>
-                    <td>
-                      <a href="{% url 'skill' x.id %}" class="action-badge action-edit me-1">Edit</a>
-                      <a href="{% url 'skill_delete' x.id %}" class="action-badge action-delete">Delete</a>
                     </td>
                   </tr>
                 {% endfor %}
@@ -478,7 +429,7 @@
           </div>
         </section>
       {% endif %}
-{% comment %} 
+
       {% if testimonials %}
         <section class="surface p-3 p-md-4 mb-4">
           <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
@@ -516,7 +467,7 @@
             </table>
           </div>
         </section>
-      {% endif %} {% endcomment %}
+      {% endif %}
 
       {% if form %}
         <section class="dash-form surface p-3 p-md-4 mx-auto">

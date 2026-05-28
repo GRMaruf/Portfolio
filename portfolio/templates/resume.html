@@ -220,26 +220,21 @@
 
               <section class="resume-section mb-4">
                 <h2>Technical Skills</h2>
-                <p class="mb-0 d-none d-print-block">
-                  {% for skill in profile.skills.all %}
-                    {{ skill.name }}{% if not forloop.last %}, {% endif %}
-                  {% empty %}
-                    Add skills in the dashboard.
+                <p class="mb-0 d-print-block">
+                  {% if profile.resume_skills %}
+                  {% load custom_filters %}
+                  {% for skill_set in profile.resume_skills|split_lines %}
+                    {% with parts=skill_set|split:':' %}
+                    <b>{{parts.0}}: </b> {{parts.1}}
+                    {% endwith %}
+                      <br>
                   {% endfor %}
-                </p>
-                <div class="no-print">
-                  {% for skill in profile.skills.all %}
-                    <span class="resume-chip">
-                      {{ skill.name }}{% if skill.level %}
-                        - {{ skill.get_level_display }}
-                      {% endif %}
-                    </span>
-                  {% empty %}
+                  {% else %}
                     <span class="muted">Add skills in the dashboard.</span>
-                  {% endfor %}
-                </div>
+                  {% endif %}
+                </p>
               </section>
-
+              
               {% if profile.experiences.all %}
                 {% comment %}Hide experience section for freshers.{% endcomment %}
                 <section class="resume-section mb-4">

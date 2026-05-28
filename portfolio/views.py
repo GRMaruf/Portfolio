@@ -202,50 +202,6 @@ def project_delete(request, id):
         return redirect('project')
 
 @login_required
-def skill(request, id=None):
-    try:
-        profile = request.user.profile
-    except:
-        print('profile does not found')
-        return redirect('edit_profile')
-    
-    context = {
-        'skills': profile.skills.all(),
-        'heading': 'Skill',
-        'action': 'Update',
-        'profile': profile,
-    }
-
-    if id:
-        skill = Skill.objects.get(id=id)
-    else:
-        skill = None
-        context['action'] = 'Create'
-    
-    if request.method == 'POST':
-        form = SkillForm(request.POST, instance = skill)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.profile = profile
-            form.save()
-        else:
-            context['form'] = form
-            return render(request, 'dashboard.html', context)
-    
-    form = SkillForm(instance = skill)
-    context['form'] = form
-    return render(request, 'dashboard.html', context)
-
-@login_required
-def skill_delete(request, id):
-    profile = request.user.profile
-    skill = Skill.objects.get(id=id)
-    if skill.profile == profile:
-        print('User verified.. True')
-        skill.delete()
-        return redirect('skill')
-
-@login_required
 def experience(request, id=None):
     try:
         profile = request.user.profile
