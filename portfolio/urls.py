@@ -11,7 +11,6 @@ urlpatterns = [
     path('<str:username>/resume', resume, name='resume'),
 
     path('dashboard/edit_profile', edit_profile, name='edit_profile'),
-    path('dashboard/add_tags', add_tags, name='add_tags'),
     path('dashboard/project', project, name='project'),
     path('dashboard/project/<int:id>', project, name='project'),
     path('dashboard/project_delete/<int:id>', project_delete, name='project_delete'),
@@ -24,9 +23,6 @@ urlpatterns = [
     path('dashboard/certificate', certificate, name='certificate'),
     path('dashboard/certificate/<int:id>', certificate, name='certificate'),
     path('dashboard/certificate_delete/<int:id>', certificate_delete, name='certificate_delete'),
-    path('dashboard/testimonial', testimonial, name='testimonial'),
-    path('dashboard/testimonial/<int:id>', testimonial, name='testimonial'),
-    path('dashboard/testimonial_delete/<int:id>', testimonial_delete, name='testimonial_delete'),
     path('dashboard/reference', reference, name='reference'),
     path('dashboard/reference/<int:id>', reference, name='reference'),
     path('dashboard/reference_delete/<int:id>', reference_delete, name='reference_delete'),

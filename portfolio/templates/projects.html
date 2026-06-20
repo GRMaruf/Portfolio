@@ -9,7 +9,7 @@
     .projects-hero {
       padding: 72px 0 32px;
     }
-
+    
     .project-shot {
       aspect-ratio: 16 / 10;
       background: var(--soft);
@@ -26,7 +26,7 @@
         <div class="col-lg-8 reveal">
           <div class="eyebrow mb-2">Project library</div>
           {% comment %} <h1 class="section-title mb-3">Work that is easy to scan and worth opening.</h1> {% endcomment %}
-          <h1 class="section-title mb-3">Know my project & know me.</h1>
+          <h1 class="section-title mb-3">My projects</h1>
           <p class="section-copy mb-0">A curated view of shipped projects, technology choices, live links, and source code.</p>
         </div>
         <div class="col-lg-4 reveal reveal-delay-1">
@@ -56,9 +56,12 @@
                 <h2 class="h4 fw-bold mb-2">{{ project.title }}</h2>
                 <p class="muted">{{ project.description }}</p>
                 <div class="d-flex flex-wrap gap-2 mb-4">
-                  {% for tag in project.tags.all %}
-                    <span class="bg-warning">{{ tag.name }}</span>
-                  {% endfor %}
+                  {% load custom_filters %}
+                  {% if project.tags %}
+                    {% for x in project.tags|split:',' %}
+                      <span class="badge rounded-pill bg-info">{{x}}</span>
+                    {% endfor %}
+                  {% endif %}
                 </div>
                 <div class="d-flex flex-wrap gap-3">
                   {% if project.live_link %}

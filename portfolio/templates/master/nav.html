@@ -82,9 +82,16 @@
     <hr class="my-3" />
 
     <div class="px-3">
-      <div class="text-uppercase small text-muted mb-2">Account</div>
+      <div class="text-uppercase small text-muted mb-2">Dashboard</div>
       {% if profile.user == request.user %}
-        <a href="{% url 'dashboard' %}" class="sidebar-link">Dashboard</a>
+        
+        <a href="{% url 'edit_profile' %}" class="sidebar-link">Profile</a>
+        <a href="{% url 'project' %}" class="sidebar-link">Projects</a>
+        <a href="{% url 'experience' %}" class="sidebar-link">Experience</a>
+        <a href="{% url 'education' %}" class="sidebar-link">Education</a>
+        <a href="{% url 'certificate' %}" class="sidebar-link">Certificates</a>
+        <a href="{% url 'reference' %}" class="sidebar-link">References</a>
+          
         <a href="{% url 'logout' %}" class="sidebar-link">Logout</a>
       {% elif request.user.is_authenticated %}
       <a href="{% url 'profile' %}" class="sidebar-link">Show Own Profile</a>

@@ -27,13 +27,7 @@ class Profile(models.Model):
     def __str__(self):
         return self.display_name or self.full_name
 
-# e.g. Django, Python, PostgreSQL, Bootstrap
-class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    # e.g. Project.objects.filter(tags__name="Django")
-
-    def __str__(self):
-        return self.name
+# Tags - e.g. Django, Python, PostgreSQL, Bootstrap
     
 class Project(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="projects")
@@ -41,7 +35,7 @@ class Project(models.Model):
     title = models.CharField(max_length=150)
     description = models.TextField()
     
-    tags = models.ManyToManyField(Tag, blank=True)
+    tags = models.TextField(blank=True)
     github_link = models.URLField(blank=True)
     live_link = models.URLField(blank=True)
 
@@ -105,27 +99,6 @@ class Certificate(models.Model):
 
     def __str__(self):
         return self.title
-    
-class Testimonial(models.Model):
-    profile = models.ForeignKey(
-        "Profile",
-        on_delete=models.CASCADE,
-        related_name="testimonials"
-    )
-
-    name = models.CharField(max_length=120)
-    position = models.CharField(max_length=120, blank=True)  # e.g. "CEO at XYZ"
-
-    message = models.TextField()
-
-    image = models.ImageField(upload_to="testimonials/", blank=True, null=True)
-
-    rating = models.PositiveSmallIntegerField(default=5)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Testimonial from {self.name}"
     
 class Reference(models.Model):
     profile = models.ForeignKey(

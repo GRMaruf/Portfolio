@@ -14,6 +14,11 @@ def user_register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
+
+            Profile.objects.create(
+                user = form.instance
+            )
+
             return redirect('login')
         else:
             context['form'] = form

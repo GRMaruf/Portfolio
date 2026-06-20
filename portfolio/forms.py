@@ -29,16 +29,23 @@ Tools: Git, Github, VS code, Postman, Thunderclient, Chrome DevTools
             })
         }
 
-class TagForm(FormControlMixin, forms.ModelForm):
-    class Meta:
-        model = Tag
-        fields = '__all__'
-
 class ProjectForm(FormControlMixin, forms.ModelForm):
     class Meta:
         model = Project
         fields = '__all__'
         exclude = ['profile',]
+
+        widgets = {
+            'tags': forms.Textarea({
+                'placeholder': "Use comma ',' to seperate skills, \ne.g. Django, Python, PostgreSQL, Bootstrap etc."
+            }),
+            'start_date': forms.DateInput(attrs={
+                'type':'date'
+            }),
+            'end_date': forms.DateInput(attrs={
+                'type':'date'
+            }),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -60,12 +67,6 @@ class EducationForm(FormControlMixin, forms.ModelForm):
 class CertificateForm(FormControlMixin, forms.ModelForm):
     class Meta:
         model = Certificate
-        fields = '__all__'
-        exclude = ['profile',]
-
-class TestimonialForm(FormControlMixin, forms.ModelForm):
-    class Meta:
-        model = Testimonial
         fields = '__all__'
         exclude = ['profile',]
 

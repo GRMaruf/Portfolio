@@ -27,7 +27,14 @@ def profile(request, username=None):
 
     context['profile'] = profile
     context['username'] = username
-    print(username)
+    
+    if profile and profile.resume_skills:
+        skills = []
+        lines = profile.resume_skills.splitlines()
+        for x in lines:
+            skills.extend(x.split(":", 1)[1].split(','))
+        context['skill_count'] = len(skills)
+
     return render(request, 'profile.html', context)
 
 @login_required
@@ -121,37 +128,6 @@ def resume(request, username=None):
     }
     return render(request, 'resume.html', context)
 
-
-def add_tags(request, id = None): # perfected
-    try:
-        profile = request.user.profile
-    except:
-        return redirect('edit_profile')
-    context = {
-        'heading': 'Tags',
-        'action': 'Add',
-        'profile': profile,
-    }
-    
-    if id:
-        object = Project.objects.get(id=id)
-    else:
-        object = None
-        context['action'] = 'Create'
-
-    if request.method == 'POST':
-        form = TagForm(request.POST, instance = object)
-        if form.is_valid():
-            form.save()
-        else:
-            context['form'] = form
-            return render(request, 'dashboard.html', context)
-
-    form = TagForm(instance = object)
-    context['form'] = form
-    context['tags'] = Tag.objects.all()
-    return render(request, 'dashboard.html', context)
-
 @login_required
 def project(request, id=None): # perfected
     try:
@@ -179,9 +155,6 @@ def project(request, id=None): # perfected
             form = form.save(commit=False)
             form.profile = profile
             form.save()
-            tags = request.POST.getlist('tags')
-            form.tags.clear()
-            form.tags.set(tags)
             print('Project successfully saved!')
         else:
             print('failed to save project!')
@@ -329,49 +302,6 @@ def certificate_delete(request, id):
         print('User verified.. True')
         certificate.delete()
         return redirect('certificate')
-
-@login_required
-def testimonial(request, id=None):
-    try:
-        profile = request.user.profile
-    except:
-        return redirect('edit_profile')
-    
-    context = {
-        'testimonials': profile.testimonials.all(),
-        'heading': 'Testimonial',
-        'action': 'Update',
-        'profile': profile,
-    }
-
-    if id:
-        object = Testimonial.objects.get(id=id)
-    else:
-        object = None
-        context['action'] = 'Create'
-    
-    if request.method == 'POST':
-        form = TestimonialForm(request.POST, request.FILES, instance = object)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.profile = profile
-            form.save()
-        else:
-            context['form'] = form
-            return render(request, 'dashboard.html', context)
-    
-    form = TestimonialForm(instance = object)
-    context['form'] = form
-    return render(request, 'dashboard.html', context)
-
-@login_required
-def testimonial_delete(request, id):
-    profile = request.user.profile
-    testimonial = Testimonial.objects.get(id=id)
-    if testimonial.profile == profile:
-        print('User verified.. True')
-        testimonial.delete()
-        return redirect('testimonial')
 
 @login_required
 def reference(request, id=None):

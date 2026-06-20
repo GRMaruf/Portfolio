@@ -12,12 +12,6 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ("tags", "start_date")
     search_fields = ("title", "description")
 
-    filter_horizontal = ("tags",)  # 👈 makes ManyToMany tags easy UI
-
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
-
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):
     list_display = ("position", "company", "start_date", "end_date")
@@ -34,12 +28,6 @@ class CertificateAdmin(admin.ModelAdmin):
     list_display = ("title", "issuer", "issue_date")
     list_filter = ("issuer",)
     search_fields = ("title", "issuer")
-
-@admin.register(Testimonial)
-class TestimonialAdmin(admin.ModelAdmin):
-    list_display = ("name", "position", "created_at", "rating")
-    search_fields = ("name", "position")
-    list_filter = ("rating",)
 
 @admin.register(Reference)
 class ReferenceAdmin(admin.ModelAdmin):

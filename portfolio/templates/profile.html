@@ -106,7 +106,7 @@
           </div>
           <div class="col-6 col-lg-3">
             <div class="surface metric p-4 reveal reveal-delay-1">
-              <div class="h2 fw-bold mb-0">{{ profile.skills.count }}</div>
+              <div class="h2 fw-bold mb-0">{{ skill_count|default:"0" }}</div>
               <div class="muted">Core skills</div>
             </div>
           </div>
@@ -253,8 +253,6 @@
 
     <section class="section-pad pt-0">
       <div class="container">
-        <div class="row g-5">
-          <div class="col-lg-6">
             <div class="eyebrow mb-2">Experience</div>
             <h2 class="section-title mb-4">Work history</h2>
             <div class="d-grid gap-4">
@@ -279,8 +277,11 @@
                 <div class="soft-panel p-4">Experience entries will appear here.</div>
               {% endfor %}
             </div>
-          </div>
-          <div class="col-lg-6">
+      </div>
+    </section>
+
+    <section class="section-pad pt-0">
+      <div class="container">
             <div class="eyebrow mb-2">Proof</div>
             <h2 class="section-title mb-4">Education & certificates</h2>
             <div class="d-grid gap-3">
@@ -307,8 +308,6 @@
                 {% endif %}
               {% endfor %}
             </div>
-          </div>
-        </div>
       </div>
     </section>
   {% else %}

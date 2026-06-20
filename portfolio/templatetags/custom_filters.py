@@ -9,7 +9,8 @@ def split(value, key):
 
 @register.filter
 def split_lines(value):
-    return value.splitlines()
+    if value:
+        return value.splitlines()
 
 @register.filter
 def first_half(value):
@@ -43,8 +44,10 @@ def third_third(value):
 
 @register.filter
 def before_colon(value):
-    return value.split(":", 1)[0]
+    if value:
+        return value.split(":", 1)[0]
 
 @register.filter
 def after_colon(value):
-    return value.split(":", 1)[1]
+    if value:
+        return value.split(":", 1)[1]
