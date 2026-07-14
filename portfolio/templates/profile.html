@@ -60,6 +60,50 @@
       top: 0.25rem;
       width: 15px;
     }
+
+    .skill-category {
+      border-left: 2px solid #dbe7ed;
+      padding: 0 0 1.5rem 1.25rem;
+      position: relative;
+    }
+
+    .skill-category::before {
+      background: var(--brand);
+      border: 4px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px #cfe0df;
+      content: '';
+      height: 14px;
+      left: -8px;
+      position: absolute;
+      top: 0.2rem;
+      width: 14px;
+    }
+
+    .skill-category-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin: 0 0 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      background: #f0f8f6;
+      border: 1px solid #cce8e3;
+      border-radius: 999px;
+      color: var(--brand-dark);
+      display: inline-flex;
+      font-size: 0.83rem;
+      font-weight: 700;
+      line-height: 1.25;
+      padding: 0.38rem 0.65rem;
+    }
   </style>
 {% endblock %}
 
@@ -183,23 +227,22 @@
             <h2 class="section-title mb-0">A stack that stays practical</h2>
           </div>
         </div>
-        <div class="surface p-5">
+        <div class="surface p-4 p-md-5">
           <div class="row g-md-4">
             <div class="col-md-4">
                 {% load custom_filters %}
                 {% if profile.resume_skills %}
                 {% for skill_set in profile.resume_skills|split_lines|first_third %}
                   {% with parts=skill_set|split:':' %}
-                    <b>{{ parts.0|upper }}</b> 
-                    <div class="timeline-item px-4">
-                      <span class="tag-pill my-2 py-3">
+                    <div class="skill-category">
+                      <h3 class="skill-category-title">{{ parts.0 }}</h3>
+                      <div class="skill-tags">
                       {% for x in parts.1|split:',' %}
-                        {{x}} <br>
+                        <span class="skill-tag">{{ x|cut:' ' }}</span>
                       {% endfor %}
-                      </span>
+                      </div>
                     </div>
                   {% endwith %}
-                  <br />
                 {% empty %}
                   <span class="muted">Add skills in the dashboard.</span>
                 {% endfor %}
@@ -208,19 +251,18 @@
             </div>
             <div class="col-md-4">
               {% load custom_filters %}
-              {% if profile.resume_skills %}
+                {% if profile.resume_skills %}
                 {% for skill_set in profile.resume_skills|split_lines|second_third %}
                   {% with parts=skill_set|split:':' %}
-                    <b>{{ parts.0|upper }}</b> 
-                    <div class="timeline-item px-4">
-                      <span class="tag-pill my-2 py-3">
+                    <div class="skill-category">
+                      <h3 class="skill-category-title">{{ parts.0 }}</h3>
+                      <div class="skill-tags">
                       {% for x in parts.1|split:',' %}
-                        {{x}} <br>
+                        <span class="skill-tag">{{ x|cut:' ' }}</span>
                       {% endfor %}
-                      </span>
+                      </div>
                     </div>
                   {% endwith %}
-                  <br />
                 {% empty %}
                   <span class="muted">Add skills in the dashboard.</span>
                 {% endfor %}
@@ -228,19 +270,18 @@
             </div>
             <div class="col-md-4">
               {% load custom_filters %}
-              {% if profile.resume_skills %}
+                {% if profile.resume_skills %}
                 {% for skill_set in profile.resume_skills|split_lines|third_third %}
                   {% with parts=skill_set|split:':' %}
-                    <b>{{ parts.0|upper }}</b> 
-                    <div class="timeline-item px-4">
-                      <span class="tag-pill my-2 py-3">
+                    <div class="skill-category">
+                      <h3 class="skill-category-title">{{ parts.0 }}</h3>
+                      <div class="skill-tags">
                       {% for x in parts.1|split:',' %}
-                        {{x}} <br>
+                        <span class="skill-tag">{{ x|cut:' ' }}</span>
                       {% endfor %}
-                      </span>
+                      </div>
                     </div>
                   {% endwith %}
-                  <br />
                 {% empty %}
                   <span class="muted">Add skills in the dashboard.</span>
                 {% endfor %}
