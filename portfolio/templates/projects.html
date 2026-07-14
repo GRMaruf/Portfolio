@@ -59,7 +59,7 @@
                   {% load custom_filters %}
                   {% if project.tags %}
                     {% for x in project.tags|split:',' %}
-                      <span class="badge rounded-pill bg-info">{{x}}</span>
+                      <span class="tag-pill">{{ x|cut:' ' }}</span>
                     {% endfor %}
                   {% endif %}
                 </div>

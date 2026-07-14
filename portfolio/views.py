@@ -9,6 +9,12 @@ from django.template.loader import render_to_string
 from django.conf import settings
 
 
+def render_dashboard_panel(request, context):
+    """Return only the editable workspace panel for HTMX requests."""
+    template = 'dashboard/_form_panel.html' if request.headers.get('HX-Request') else 'dashboard.html'
+    return render(request, template, context)
+
+
 def home(request):
     return render(request, 'home.html')
 
@@ -39,7 +45,19 @@ def profile(request, username=None):
 
 @login_required
 def dashboard(request):
-    return redirect('edit_profile')
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:
+        return redirect('edit_profile')
+
+    return render(request, 'dashboard.html', {
+        'profile': profile,
+        'projects': profile.projects.all(),
+        'experiences': profile.experiences.all(),
+        'educations': profile.education.all(),
+        'certificates': profile.certificates.all(),
+        'references': profile.references.all(),
+    })
 
 
 @login_required
@@ -61,13 +79,16 @@ def edit_profile(request):
             form = form.save(commit=False)
             form.user = request.user
             form.save()
+            profile = form
+            context['profile'] = profile
+            context['success_message'] = 'Profile saved successfully.'
         else:
             context['form'] = form
-            return render(request, 'dashboard.html', context)
+            return render_dashboard_panel(request, context)
     
     form = ProfileForm(instance = profile)
     context['form'] = form
-    return render(request, 'dashboard.html', context)
+    return render_dashboard_panel(request, context)
 
 def contact(request, username=None):
     profile = get_user_profile(username)
@@ -155,15 +176,16 @@ def project(request, id=None): # perfected
             form = form.save(commit=False)
             form.profile = profile
             form.save()
+            context['success_message'] = 'Project saved successfully.'
             print('Project successfully saved!')
         else:
             print('failed to save project!')
             context['form'] = form
-            return render(request, 'dashboard.html', context)
+            return render_dashboard_panel(request, context)
     
     form = ProjectForm(instance = project)
     context['form'] = form
-    return render(request, 'dashboard.html', context)
+    return render_dashboard_panel(request, context)
 
 @login_required
 def project_delete(request, id):
@@ -200,13 +222,14 @@ def experience(request, id=None):
             form = form.save(commit=False)
             form.profile = profile
             form.save()
+            context['success_message'] = 'Experience saved successfully.'
         else:
             context['form'] = form
-            return render(request, 'dashboard.html', context)
+            return render_dashboard_panel(request, context)
     
     form = ExperienceForm(instance = object)
     context['form'] = form
-    return render(request, 'dashboard.html', context)
+    return render_dashboard_panel(request, context)
 
 @login_required
 def experience_delete(request, id):
@@ -243,13 +266,14 @@ def education(request, id=None):
             form = form.save(commit=False)
             form.profile = profile
             form.save()
+            context['success_message'] = 'Education saved successfully.'
         else:
             context['form'] = form
-            return render(request, 'dashboard.html', context)
+            return render_dashboard_panel(request, context)
     
     form = EducationForm(instance = object)
     context['form'] = form
-    return render(request, 'dashboard.html', context)
+    return render_dashboard_panel(request, context)
 
 @login_required
 def education_delete(request, id):
@@ -286,13 +310,14 @@ def certificate(request, id=None):
             form = form.save(commit=False)
             form.profile = profile
             form.save()
+            context['success_message'] = 'Certificate saved successfully.'
         else:
             context['form'] = form
-            return render(request, 'dashboard.html', context)
+            return render_dashboard_panel(request, context)
     
     form = CertificateForm(instance = object)
     context['form'] = form
-    return render(request, 'dashboard.html', context)
+    return render_dashboard_panel(request, context)
 
 @login_required
 def certificate_delete(request, id):
@@ -329,13 +354,14 @@ def reference(request, id=None):
             form = form.save(commit=False)
             form.profile = profile
             form.save()
+            context['success_message'] = 'Reference saved successfully.'
         else:
             context['form'] = form
-            return render(request, 'dashboard.html', context)
+            return render_dashboard_panel(request, context)
     
     form = ReferenceForm(instance = object)
     context['form'] = form
-    return render(request, 'dashboard.html', context)
+    return render_dashboard_panel(request, context)
 
 @login_required
 def reference_delete(request, id):

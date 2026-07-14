@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&lnp+d)@5(edpgl=+xv(h4^lsz$wzh@un7&$k*ksq8#7-808nh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -107,18 +107,16 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 # }
 
 # Email Settings
-# 587 + TLS ✅
-# or 465 + SSL
-
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mail.pybrothers.top'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
+# EMAIL_PORT = 465
+EMAIL_PORT = 587
+# EMAIL_USE_SSL = True
+EMAIL_USE_TLS = True
 
 # Gmail requires an App Password (NOT your Gmail login password)
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
@@ -158,9 +156,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = '/media/'
+
 MEDIA_ROOT = BASE_DIR / "media"
 
 LOGIN_URL = 'login'

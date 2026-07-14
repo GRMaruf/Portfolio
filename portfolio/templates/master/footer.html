@@ -1,28 +1,13 @@
-<footer class="footer py-4 bg-white">
+<footer class="footer py-4">
   <div class="container">
-    <div>
-      <div class="fw-bold text-dark">{{ profile.display_name|default:'Portfolio' }}</div>
-      <small>{{ profile.title }}</small>
+    <div class="fw-bold text-dark">{{ profile.display_name|default:'Portfolio' }}</div>
+    {% if profile.title %}<small>{{ profile.title }}</small>{% endif %}
+    <div class="social-links mt-2">
+      {% if profile.github %}<a href="{{ profile.github }}" target="_blank" rel="noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>{% endif %}
+      {% if profile.linkedin %}<a href="{{ profile.linkedin }}" target="_blank" rel="noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>{% endif %}
+      {% if profile.website %}<a href="{{ profile.website }}" target="_blank" rel="noreferrer" aria-label="Website"><i class="fa-solid fa-globe"></i></a>{% endif %}
+      {% if profile.user.email %}<a href="{% url 'contact' profile.user.username %}" aria-label="Contact"><i class="fas fa-envelope"></i></a>{% endif %}
     </div>
-    <div class="social-links">
-      {% if profile.github %}
-        <a href="{{ profile.github }}" target="_blank"><i class="fab fa-github"></i></a>
-      {% endif %}
-      {% if profile.linkedin %}
-        <a href="{{ profile.linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a>
-      {% endif %}
-      {% if profile.website %}
-        <a href="{{ profile.website }}" target="_blank"><i class="fa fa-globe"></i></a>
-      {% endif %}
-      {% comment %} fa,.fa-brands,.fa-classic,.fa-regular,.fa-sharp,.fa-solid,.fab,.far,.fas {% endcomment %}
-      {% if profile.user.email %}
-        <a href="{% url 'contact' profile.user.username %}">
-            <i class="fas fa-envelope"></i>
-        </a>
-      {% endif %}
-    </div>
-    <div>
-      <small>Member since ©{{ profile.user.date_joined|date:"Y"}}</small>
-    </div>
+    <small>&copy; {% now "Y" %} {{ profile.display_name|default:'Portfolio' }}</small>
   </div>
 </footer>

@@ -1,433 +1,73 @@
 {% extends 'master/base.html' %}
 
-{% block title %}
-  Dashboard
-{% endblock %}
-
-{% block css %}
-  <style>
-    .dashboard-wrap {
-      padding: 44px 0 72px;
-    }
-
-    .dash-hero {
-      background:
-        linear-gradient(135deg, rgba(15, 118, 110, 0.94), rgba(22, 33, 62, 0.96)),
-        url('/media/app/logo.png') right 2rem center / 160px no-repeat;
-      border-radius: 8px;
-      color: #fff;
-      overflow: hidden;
-      padding: clamp(1.4rem, 4vw, 2.4rem);
-    }
-
-    .dash-hero .section-copy,
-    .dash-hero .muted {
-      color: rgba(255, 255, 255, 0.76);
-    }
-
-    .dash-action {
-      background: linear-gradient(180deg, var(--brand) 0%, #eef3f8 100%);
-      border: 1px solid rgba(221, 229, 238, 0.92);
-      border-radius: 8px;
-      color: var(--ink);
-      display: inline;
-      height: 100%;
-      padding: 1.1rem;
-      text-decoration: none;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
-    }
-
-    .dash-action:hover {
-      border-color: rgba(15, 118, 110, 0.36);
-      box-shadow: var(--shadow);
-      color: var(--ink);
-      transform: translateY(-4px);
-    }
-
-    .dash-icon {
-      align-items: center;
-      background: #e7f6f3;
-      border-radius: 8px;
-      color: var(--brand-dark);
-      display: inline-flex;
-      font-weight: 900;
-      height: 42px;
-      justify-content: center;
-      margin-bottom: 0.85rem;
-      width: 42px;
-    }
-
-    .dash-table {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .dash-table table {
-      margin-bottom: 0;
-      min-width: 680px;
-    }
-
-    .dash-table th {
-      border-bottom: 1px solid var(--line);
-      color: var(--brand-dark);
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .dash-table td {
-      vertical-align: middle;
-    }
-
-    .dash-form {
-      max-width: 760px;
-    }
-
-    .dash-form .form-control,
-    .dash-form .form-select {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      min-height: 46px;
-    }
-
-    .dash-form textarea.form-control {
-      min-height: 130px;
-    }
-
-    .dash-form .form-control:focus,
-    .dash-form .form-select:focus {
-      border-color: var(--brand);
-      box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.12);
-    }
-
-    .status-dot {
-      background: #12b76a;
-      border-radius: 50%;
-      display: inline-block;
-      height: 8px;
-      margin-right: 0.4rem;
-      width: 8px;
-    }
-
-    .action-badge {
-      border-radius: 999px;
-      display: inline-flex;
-      font-size: 0.78rem;
-      font-weight: 800;
-      line-height: 1;
-      padding: 0.45rem 0.7rem;
-      text-decoration: none;
-    }
-
-    .action-edit {
-      background: #fff7ed;
-      color: #9a3412;
-    }
-
-    .action-delete {
-      background: #fef2f2;
-      color: #b42318;
-    }
-
-    .sidebar {
-      width: 300px;
-    }
-  </style>
-{% endblock %}
+{% block title %}Portfolio Builder{% endblock %}
 
 {% block content %}
-  <section class="dashboard-wrap">
+  <section class="workspace">
     <div class="container">
-      {% if projects %}
-        <section class="surface p-3 p-md-4 mb-4">
-          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-            <div>
-              <h2 class="h4 fw-bold mb-1">Projects</h2>
-              <p class="muted mb-0">Keep links and descriptions recruiter-ready.</p>
-            </div>
-            <a href="{% url 'project' %}" class="btn btn-brand">Add Project</a>
-          </div>
-          <div class="dash-table">
-            <table class="table align-middle">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Title</th>
-                  <th>Status</th>
-                  <th>Live</th>
-                  <th>Attach</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for x in projects %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td class="fw-bold">{{ x.title|truncatechars:50 }}</td>
-                    <td><span class="status-dot"></span>{% if x.live_link %}Published{% else %}Draft{% endif %}</td>
-                    <td>{% if x.live_link %}<a href="{{ x.live_link }}" target="_blank" rel="noreferrer">Visit</a>{% else %}<span class="muted">No link</span>{% endif %}</td>
-                    <td>{% if x.attach %}CV{% else %}Not attached{% endif %}</td>
-                    <td>
-                      <a href="{% url 'project' x.id %}" class="action-badge action-edit me-1">Edit</a>
-                      <a href="{% url 'project_delete' x.id %}" class="action-badge action-delete">Delete</a>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      {% endif %}
+      <header class="workspace-hero mb-4 reveal">
+        <div class="eyebrow mb-2">Portfolio builder</div>
+        <h1 class="h2 fw-bold mb-2">{{ profile.full_name|default:request.user.username }}, your story is taking shape.</h1>
+        <p class="mb-4">Keep the details current, then share a polished portfolio and a clean, printable resume from one place.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="{% url 'profile' request.user.username %}" class="btn btn-light"><i class="fa-solid fa-arrow-up-right-from-square me-2"></i>View portfolio</a>
+          <a href="{% url 'resume' request.user.username %}" class="btn btn-outline-light"><i class="fa-solid fa-file-lines me-2"></i>Preview resume</a>
+        </div>
+      </header>
 
-      {% if experiences %}
-        <section class="surface p-3 p-md-4 mb-4">
-          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-            <div>
-              <h2 class="h4 fw-bold mb-1">Experience</h2>
-              <p class="muted mb-0">Roles, companies, and measurable work.</p>
-            </div>
-            <a href="{% url 'experience' %}" class="btn btn-brand">Add Experience</a>
+      <div class="row g-4 align-items-start">
+        <aside class="col-lg-3 no-print">
+          <nav class="builder-nav mb-4">
+            <a href="{% url 'dashboard' %}" class="active"><i class="fa-solid fa-grid-2"></i>Overview</a>
+            <a href="{% url 'edit_profile' %}" hx-get="{% url 'edit_profile' %}" hx-target="#builder-panel" hx-swap="innerHTML" hx-push-url="true"><i class="fa-regular fa-user"></i>Profile details</a>
+            <a href="{% url 'project' %}" hx-get="{% url 'project' %}" hx-target="#builder-panel" hx-swap="innerHTML" hx-push-url="true"><i class="fa-solid fa-briefcase"></i>Projects</a>
+            <a href="{% url 'experience' %}" hx-get="{% url 'experience' %}" hx-target="#builder-panel" hx-swap="innerHTML" hx-push-url="true"><i class="fa-solid fa-chart-line"></i>Experience</a>
+            <a href="{% url 'education' %}" hx-get="{% url 'education' %}" hx-target="#builder-panel" hx-swap="innerHTML" hx-push-url="true"><i class="fa-solid fa-graduation-cap"></i>Education</a>
+            <a href="{% url 'certificate' %}" hx-get="{% url 'certificate' %}" hx-target="#builder-panel" hx-swap="innerHTML" hx-push-url="true"><i class="fa-solid fa-award"></i>Certificates</a>
+            <a href="{% url 'reference' %}" hx-get="{% url 'reference' %}" hx-target="#builder-panel" hx-swap="innerHTML" hx-push-url="true"><i class="fa-solid fa-people-group"></i>References</a>
+          </nav>
+          <div class="soft-panel p-3 small muted">
+            Your public portfolio updates the moment you save an entry.
           </div>
-          <div class="dash-table">
-            <table class="table align-middle">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Position</th>
-                  <th>Company</th>
-                  <th>Timeline</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for x in experiences %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td class="fw-bold">{{ x.position }}</td>
-                    <td>{{ x.company }}</td>
-                    <td>{{ x.start_date|date:'M Y' }} - {% if x.end_date %}{{ x.end_date|date:'M Y' }}{% else %}Present{% endif %}</td>
-                    <td>
-                      <a href="{% url 'experience' x.id %}" class="action-badge action-edit me-1">Edit</a>
-                      <a href="{% url 'experience_delete' x.id %}" class="action-badge action-delete">Delete</a>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      {% endif %}
+        </aside>
 
-      {% if educations %}
-        <section class="surface p-3 p-md-4 mb-4">
-          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-            <div>
-              <h2 class="h4 fw-bold mb-1">Education</h2>
-              <p class="muted mb-0">Academic background for the resume.</p>
+        <div class="col-lg-9" id="builder-panel">
+          {% if form %}
+            {% include 'dashboard/_form_panel.html' %}
+          {% else %}
+            <div class="row g-3 mb-4 reveal">
+              <div class="col-6 col-md-3"><div class="status-card"><div class="status-value">{{ projects.count }}</div><div class="status-label">Projects</div></div></div>
+              <div class="col-6 col-md-3"><div class="status-card"><div class="status-value">{{ experiences.count }}</div><div class="status-label">Experience entries</div></div></div>
+              <div class="col-6 col-md-3"><div class="status-card"><div class="status-value">{{ educations.count }}</div><div class="status-label">Education entries</div></div></div>
+              <div class="col-6 col-md-3"><div class="status-card"><div class="status-value">{{ certificates.count }}</div><div class="status-label">Certificates</div></div></div>
             </div>
-            <a href="{% url 'education' %}" class="btn btn-brand">Add Education</a>
-          </div>
-          <div class="dash-table">
-            <table class="table align-middle">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Institution</th>
-                  <th>Degree</th>
-                  <th>Years</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for x in educations %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td class="fw-bold">{{ x.institution }}</td>
-                    <td>{{ x.degree }}</td>
-                    <td>{{ x.start_year }} - {{ x.end_year|default:'Present' }}</td>
-                    <td>
-                      <a href="{% url 'education' x.id %}" class="action-badge action-edit me-1">Edit</a>
-                      <a href="{% url 'education_delete' x.id %}" class="action-badge action-delete">Delete</a>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      {% endif %}
 
-      {% if certificates %}
-        <section class="surface p-3 p-md-4 mb-4">
-          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-            <div>
-              <h2 class="h4 fw-bold mb-1">Certificates</h2>
-              <p class="muted mb-0">Credentials with issuer and verification.</p>
-            </div>
-            <a href="{% url 'certificate' %}" class="btn btn-brand">Add Certificate</a>
-          </div>
-          <div class="dash-table">
-            <table class="table align-middle">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Title</th>
-                  <th>Issuer</th>
-                  <th>Issued</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for x in certificates %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td class="fw-bold">{{ x.title }}</td>
-                    <td>{{ x.issuer }}</td>
-                    <td>{{ x.issue_date|date:'M Y' }}</td>
-                    <td>
-                      <a href="{% url 'certificate' x.id %}" class="action-badge action-edit me-1">Edit</a>
-                      <a href="{% url 'certificate_delete' x.id %}" class="action-badge action-delete">Delete</a>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      {% endif %}
+            <section class="builder-section reveal reveal-delay-1">
+              <div class="builder-section-head"><div><h2>Projects</h2><p>Case studies, live links, and source code.</p></div><a href="{% url 'project' %}" class="btn btn-brand"><i class="fa-solid fa-plus me-2"></i>Add project</a></div>
+              {% if projects %}<div class="builder-table"><table class="table"><thead><tr><th>Project</th><th>Visibility</th><th>Resume</th><th class="text-end">Actions</th></tr></thead><tbody>{% for item in projects %}<tr><td>{{ item.title }}</td><td>{% if item.live_link %}<span class="tag-pill">Live</span>{% else %}<span class="muted">Draft</span>{% endif %}</td><td>{% if item.attach %}Included{% else %}<span class="muted">Not included</span>{% endif %}</td><td class="text-end"><a class="icon-button" href="{% url 'project' item.id %}" title="Edit {{ item.title }}" aria-label="Edit {{ item.title }}"><i class="fa-solid fa-pen"></i></a> <a class="icon-button danger" href="{% url 'project_delete' item.id %}" title="Delete {{ item.title }}" aria-label="Delete {{ item.title }}"><i class="fa-solid fa-trash"></i></a></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state m-3">Your best work belongs here. Add a project to start your showcase.</div>{% endif %}
+            </section>
 
-      {% if references %}
-        <section class="surface p-3 p-md-4 mb-4">
-          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-            <div>
-              <h2 class="h4 fw-bold mb-1">References</h2>
-              <p class="muted mb-0">People who can vouch for your professional skills, character, and work ethic.</p>
-            </div>
-            <a href="{% url 'testimonial' %}" class="btn btn-brand">Add Testimonial</a>
-          </div>
-          <div class="dash-table">
-            <table class="table align-middle">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for x in references %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td class="fw-bold">{{ x.name }}</td>
-                    <td>{{ x.email }}</td>
-                    <td>{{ x.phone }}/5</td>
-                    <td>
-                      <a href="{% url 'reference' x.id %}" class="action-badge action-edit me-1">Edit</a>
-                      <a href="{% url 'reference_delete' x.id %}" class="action-badge action-delete">Delete</a>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      {% endif %}
+            <section class="builder-section reveal reveal-delay-1">
+              <div class="builder-section-head"><div><h2>Experience</h2><p>Roles and the impact you made.</p></div><a href="{% url 'experience' %}" class="btn btn-outline-brand"><i class="fa-solid fa-plus me-2"></i>Add experience</a></div>
+              {% if experiences %}<div class="builder-table"><table class="table"><thead><tr><th>Role</th><th>Company</th><th>Timeline</th><th class="text-end">Actions</th></tr></thead><tbody>{% for item in experiences %}<tr><td>{{ item.position }}</td><td>{{ item.company }}</td><td>{{ item.start_date|date:'M Y' }} - {% if item.end_date %}{{ item.end_date|date:'M Y' }}{% else %}Present{% endif %}</td><td class="text-end"><a class="icon-button" href="{% url 'experience' item.id %}" title="Edit experience" aria-label="Edit experience"><i class="fa-solid fa-pen"></i></a> <a class="icon-button danger" href="{% url 'experience_delete' item.id %}" title="Delete experience" aria-label="Delete experience"><i class="fa-solid fa-trash"></i></a></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state m-3">Add experience to make your career path easy to understand.</div>{% endif %}
+            </section>
 
-      {% if testimonials %}
-        <section class="surface p-3 p-md-4 mb-4">
-          <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
-            <div>
-              <h2 class="h4 fw-bold mb-1">Testimonials</h2>
-              <p class="muted mb-0">Short endorsements for your public profile.</p>
-            </div>
-            <a href="{% url 'testimonial' %}" class="btn btn-brand">Add Testimonial</a>
-          </div>
-          <div class="dash-table">
-            <table class="table align-middle">
-              <thead>
-                <tr>
-                  <th>SL</th>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Rating</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for x in testimonials %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td class="fw-bold">{{ x.name }}</td>
-                    <td>{{ x.position }}</td>
-                    <td>{{ x.rating }}/5</td>
-                    <td>
-                      <a href="{% url 'testimonial' x.id %}" class="action-badge action-edit me-1">Edit</a>
-                      <a href="{% url 'testimonial_delete' x.id %}" class="action-badge action-delete">Delete</a>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      {% endif %}
+            <section class="builder-section reveal reveal-delay-2">
+              <div class="builder-section-head"><div><h2>Education</h2><p>Academic foundation and relevant study.</p></div><a href="{% url 'education' %}" class="btn btn-outline-brand"><i class="fa-solid fa-plus me-2"></i>Add education</a></div>
+              {% if educations %}<div class="builder-table"><table class="table"><thead><tr><th>Institution</th><th>Degree</th><th>Years</th><th class="text-end">Actions</th></tr></thead><tbody>{% for item in educations %}<tr><td>{{ item.institution }}</td><td>{{ item.degree }}</td><td>{{ item.start_year }} - {{ item.end_year|default:'Present' }}</td><td class="text-end"><a class="icon-button" href="{% url 'education' item.id %}" title="Edit education" aria-label="Edit education"><i class="fa-solid fa-pen"></i></a> <a class="icon-button danger" href="{% url 'education_delete' item.id %}" title="Delete education" aria-label="Delete education"><i class="fa-solid fa-trash"></i></a></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state m-3">Add education so your resume has the full picture.</div>{% endif %}
+            </section>
 
-      <div class="d-flex align-items-start">
-        <div class="sidebar d-none d-lg-flex flex-column mb-5 me-md-5">
-          <a class="dash-action" href="{% url 'edit_profile' %}">
-            <span class="dash-icon">P</span>
-            <div class="fw-bold">Profile</div>
-            <div class="muted small">Name, title, bio, links</div>
-          </a>
-          <a class="dash-action" href="{% url 'project' %}">
-            <span class="dash-icon">W</span>
-            <div class="fw-bold">Projects</div>
-            <div class="muted small">Case studies and links</div>
-          </a>
-          <a class="dash-action" href="{% url 'experience' %}">
-            <span class="dash-icon">E</span>
-            <div class="fw-bold">Experience</div>
-            <div class="muted small">Roles and impact</div>
-          </a>
-          <a class="dash-action" href="{% url 'education' %}">
-            <span class="dash-icon">D</span>
-            <div class="fw-bold">Education</div>
-            <div class="muted small">Degrees and study</div>
-          </a>
-          <a class="dash-action" href="{% url 'certificate' %}">
-            <span class="dash-icon">C</span>
-            <div class="fw-bold">Certificates</div>
-            <div class="muted small">Credentials and proof</div>
-          </a>
-          <a class="dash-action" href="{% url 'reference' %}">
-            <span class="dash-icon">T</span>
-            <div class="fw-bold">References</div>
-            <div class="muted small">Connection</div>
-          </a>
-      </div>
+            <section class="builder-section reveal reveal-delay-2">
+              <div class="builder-section-head"><div><h2>Certificates</h2><p>Credentials that back up your expertise.</p></div><a href="{% url 'certificate' %}" class="btn btn-outline-brand"><i class="fa-solid fa-plus me-2"></i>Add certificate</a></div>
+              {% if certificates %}<div class="builder-table"><table class="table"><thead><tr><th>Credential</th><th>Issuer</th><th>Issued</th><th class="text-end">Actions</th></tr></thead><tbody>{% for item in certificates %}<tr><td>{{ item.title }}</td><td>{{ item.issuer }}</td><td>{{ item.issue_date|date:'M Y' }}</td><td class="text-end"><a class="icon-button" href="{% url 'certificate' item.id %}" title="Edit certificate" aria-label="Edit certificate"><i class="fa-solid fa-pen"></i></a> <a class="icon-button danger" href="{% url 'certificate_delete' item.id %}" title="Delete certificate" aria-label="Delete certificate"><i class="fa-solid fa-trash"></i></a></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state m-3">Include verified learning and professional credentials here.</div>{% endif %}
+            </section>
 
-      {% if form %}
-        <section class="dash-form surface p-3 p-md-4 mx-auto">
-          <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-3">
-            <div>
-              <div class="eyebrow mb-2">{{ action }}</div>
-              <h2 class="h3 fw-bold mb-1 text-capitalize">{{ heading }}</h2>
-              <p class="muted mb-0">Use clear titles, concise descriptions, and complete links for the strongest portfolio and resume.</p>
-            </div>
-          </div>
-
-          <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% include 'forms/form-core.html' %}
-            <div class="d-grid">
-              <button type="submit" class="btn btn-brand py-3 text-capitalize">{{ action }} {{ heading }}</button>
-            </div>
-          </form>
-        </section>
-      {% endif %}
+            <section class="builder-section reveal reveal-delay-2">
+              <div class="builder-section-head"><div><h2>References</h2><p>Professional contacts who can speak to your work.</p></div><a href="{% url 'reference' %}" class="btn btn-outline-brand"><i class="fa-solid fa-plus me-2"></i>Add reference</a></div>
+              {% if references %}<div class="builder-table"><table class="table"><thead><tr><th>Name</th><th>Role</th><th>Email</th><th class="text-end">Actions</th></tr></thead><tbody>{% for item in references %}<tr><td>{{ item.name }}</td><td>{{ item.position|default:'-' }}</td><td>{{ item.email|default:'-' }}</td><td class="text-end"><a class="icon-button" href="{% url 'reference' item.id %}" title="Edit reference" aria-label="Edit reference"><i class="fa-solid fa-pen"></i></a> <a class="icon-button danger" href="{% url 'reference_delete' item.id %}" title="Delete reference" aria-label="Delete reference"><i class="fa-solid fa-trash"></i></a></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state m-3">Add professional references when you are ready to share them.</div>{% endif %}
+            </section>
+          {% endif %}
+        </div>
       </div>
     </div>
   </section>

@@ -1,0 +1,20 @@
+<section class="builder-form surface reveal">
+  <div class="builder-section-head">
+    <div>
+      <div class="eyebrow mb-1">{{ action }}</div>
+      <h2 class="text-capitalize">{{ heading }}</h2>
+      <p>Add focused, specific information that is easy for recruiters to scan.</p>
+    </div>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-brand">Back to overview</a>
+  </div>
+  <div class="form-shell">
+    {% if success_message %}<div class="alert alert-success mb-4">{{ success_message }}</div>{% endif %}
+    <form method="post" enctype="multipart/form-data" hx-post="{{ request.path }}" hx-target="#builder-panel" hx-swap="innerHTML" hx-encoding="multipart/form-data">
+      {% csrf_token %}
+      {% include 'forms/form-core.html' %}
+      <div class="d-flex justify-content-end pt-2">
+        <button type="submit" class="btn btn-brand px-4 text-capitalize"><i class="fa-solid fa-check me-2"></i>{{ action }} {{ heading }}</button>
+      </div>
+    </form>
+  </div>
+</section>

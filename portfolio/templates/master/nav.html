@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light sticky-top">
   <div class="container">
-    <button class="btn btn-outline-brand d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar" aria-label="Open navigation">Menu</button>
+    <button class="btn btn-outline-brand d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar" aria-label="Open navigation"><i class="fa-solid fa-bars"></i></button>
 
     <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'profile' profile.user.username|default:'demo' %}">
       {% if profile.profile_image %}
@@ -17,7 +17,7 @@
           <a class="nav-link" href="{% url 'home' %}">Home</a>
         </li> {% endcomment %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'profile' profile.user.username|default:'demo' %}">Profile</a>
+          <a class="nav-link" href="{% url 'profile' profile.user.username|default:'demo' %}">Portfolio</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'projects' profile.user.username|default:'demo' %}">Projects</a>
@@ -30,7 +30,7 @@
         </li>
         {% if profile.user == request.user %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+            <a class="btn btn-brand px-3" href="{% url 'dashboard' %}"><i class="fa-solid fa-pen-ruler me-2"></i>Builder</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
