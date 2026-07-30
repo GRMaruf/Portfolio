@@ -16,7 +16,8 @@ A public resume site where recruiters can view a candidate's resume, print/save 
 Python · Django · SQLite/PostgreSQL · HTML/CSS/Bootstrap
 
 ## Run Locally
-​```bash
+
+```bash
 git clone https://github.com/GRMaruf/Portfolio.git
 cd Portfolio
 pip install -r requirements.txt
@@ -24,7 +25,7 @@ python manage.py makemigrations authentication
 python manage.py makemigrations portfolio
 python manage.py migrate
 python manage.py runserver
-​```
+```
 
 ## What I'd Build Next
 - Server-generated PDF export (styled independently of browser print settings)
