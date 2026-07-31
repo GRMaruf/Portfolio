@@ -2,7 +2,7 @@
 
 A public resume site where recruiters can view a candidate's resume, print/save it as PDF, and email the candidate directly — no login required. Built with Django, includes an authenticated dashboard for the resume owner to manage their content.
 
-🔗 **Live demo:** https://profile.pybrothers.top/
+🔗 **Live demo:** https://pybrothers.top/
 
 [Screenshots here — resume view + the email/contact feature in action]
 
