@@ -5,7 +5,7 @@ A public resume site where recruiters can view a candidate's resume, print/save 
 🔗 **Live demo:** https://pybrothers.top/
 
 [Screenshots here — resume view]
-<img width="1584" height="396" alt="Golam Rasul Maruf (1)" src="https://github.com/user-attachments/assets/3fb38b4e-5c81-4e8d-9b3c-d6c2410b9c10" />
+<img width="1359" height="685" alt="p_contact" src="https://github.com/user-attachments/assets/3965aeb1-4333-4d62-9f50-14267811db94" />
 
 ## Features
 - Public resume page — no account needed to view, print, or save as PDF
