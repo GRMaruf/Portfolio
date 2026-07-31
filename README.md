@@ -4,7 +4,8 @@ A public resume site where recruiters can view a candidate's resume, print/save 
 
 🔗 **Live demo:** https://pybrothers.top/
 
-[Screenshots here — resume view + the email/contact feature in action]
+[Screenshots here — resume view]
+<img width="1359" height="767" alt="p_contact page" src="https://github.com/user-attachments/assets/73da53c2-b50b-49a3-b1fe-3227926408f0" />
 
 ## Features
 - Public resume page — no account needed to view, print, or save as PDF
